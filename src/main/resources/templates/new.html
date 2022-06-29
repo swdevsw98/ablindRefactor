@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form action="/new" method="post" th:object="${memberFormDto}">
+
+        <label for="name">Name: </label>
+        <input type="text" id="name" th:field="*{name}"/>
+        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Incorrect data</p>
+        <br/>
+
+        <label for="pass">Pass: </label>
+        <input type="text" id="pass" th:field="*{pass}"/>
+        <p th:if="${#fields.hasErrors('pass')}" th:errors="*{pass}">Incorrect data</p>
+        <br/>
+
+        <label for="email">Email: </label>
+        <input type="text" id="email" th:field="*{email}"/>
+        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Incorrect data</p>
+        <br/>
+
+        <label for="address">Address: </label>
+        <input type="text" id="address" th:field="*{address}"/>
+        <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}">Incorrect data</p>
+        <br/>
+
+        <label for="phoneNumber">PhoneNumber: </label>
+        <input type="text" id="phoneNumber" th:field="*{phoneNumber}"/>
+        <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">Incorrect data</p>
+        <br/>
+
+        <label for="account_name">Account_name: </label>
+        <input type="text" id="account_name" th:field="*{account_name}"/>
+        <p th:if="${#fields.hasErrors('account_name')}" th:errors="*{account_name}">Incorrect data</p>
+        <br/>
+
+        <label for="account">account: </label>
+        <input type="text" id="account" th:field="*{account}"/>
+        <p th:if="${#fields.hasErrors('account')}" th:errors="*{account}">Incorrect data</p>
+        <br/>
+
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <input type="submit" value="제출"/>
+    </form>
+
+</body>
+</html>

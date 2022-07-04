@@ -12,4 +12,7 @@ public class HomeController {
     public ResponseEntity home() {
         return new ResponseEntity("success", HttpStatus.OK);
     }
+
+    @GetMapping("/admin")
+    public ResponseEntity admin() { return new ResponseEntity("success", HttpStatus.OK); }
 }

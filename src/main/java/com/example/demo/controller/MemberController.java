@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.config.JwtTokenProvider;
 import com.example.demo.dto.MemberFormDto;
 import com.example.demo.entity.Member;
 import com.example.demo.repository.MemberRepository;
@@ -13,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Map;
 
 @RequestMapping("/members")
 @RestController
@@ -20,6 +22,7 @@ import javax.validation.Valid;
 @CrossOrigin(origins = "*")
 public class MemberController {
 
+    private final JwtTokenProvider jwtTokenProvider;
     private final MemberRepository memberRepository;
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
@@ -45,5 +48,14 @@ public class MemberController {
         return new ResponseEntity("success", HttpStatus.OK);
     }
 
+    // 로그인
+    @PostMapping("/login")
+    public String login(@RequestBody Map<String, String> user) {
+        Member member = memberRepository.findByEmail(user.get("email"));
+        if (!passwordEncoder.matches(user.get("pass"), member.getPass())) {
+            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
+        }
+        return jwtTokenProvider.createToken(member.getEmail(), member.getRole());
+    }
 
 }

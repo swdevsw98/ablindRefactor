@@ -75,4 +75,10 @@ public class JwtTokenProvider {
             return false;
         }
     }
+
+    public Date jwtValidDate() {
+        Date now = new Date();
+        Date date = new Date(now.getTime() + tokenValidTime);
+        return date;
+    }
 }

@@ -50,19 +50,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class);
 
-//        http
-////                .formLogin()
-////                .loginProcessingUrl("/members/login")
-////                .usernameParameter("email")
-////                .passwordParameter("pass")
-////                .defaultSuccessUrl("/")
-////                .failureUrl("/login/error")
-////                .and()
-//                .logout()
-//                .logoutUrl("/members/logout")
-//                .logoutSuccessUrl("/")
-//                .and()
-//                .csrf().disable();
     }
 
     @Override

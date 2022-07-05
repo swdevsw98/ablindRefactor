@@ -58,4 +58,17 @@ public class MemberController {
         return jwtTokenProvider.createToken(member.getEmail(), member.getRole());
     }
 
+    @PostMapping("/login/id")
+    public ResponseEntity duplicateId(@RequestBody Map<String, String> emailMap) throws NullPointerException{
+        Member member = memberRepository.findByEmail(emailMap.get("email"));
+
+        if(member == null) {
+            return new ResponseEntity("OK", HttpStatus.OK);
+        }
+
+        return new ResponseEntity("No", HttpStatus.FORBIDDEN);
+
+
+    }
+
 }

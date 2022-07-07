@@ -1,11 +1,9 @@
 package com.example.demo.entity;
 
-import com.example.demo.constant.Role;
 import com.example.demo.dto.MemberFormDto;
 import lombok.Data;
 
 import lombok.ToString;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;

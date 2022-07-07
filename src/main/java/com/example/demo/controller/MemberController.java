@@ -24,7 +24,7 @@ import java.util.Map;
 @RequestMapping("/members")
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 public class MemberController {
 
     private final JwtTokenProvider jwtTokenProvider;

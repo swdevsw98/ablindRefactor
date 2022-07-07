@@ -15,4 +15,7 @@ public class HomeController {
 
     @GetMapping("/admin")
     public ResponseEntity admin() { return new ResponseEntity("success", HttpStatus.OK); }
+
+    @GetMapping("/user")
+    public ResponseEntity user() { return new ResponseEntity("success", HttpStatus.OK); }
 }

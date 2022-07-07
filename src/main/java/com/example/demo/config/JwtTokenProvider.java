@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -23,9 +24,11 @@ import java.util.List;
 @Component
 public class JwtTokenProvider {
 
-    private String secretKey = "webfirewood";
+    @Value("${secretKey.value}")
+    private String secretKey;
 
-    private long tokenValidTime = 30 * 60 * 1000L; // 토큰 유효시간 30분, 1000L는 1초
+    private long tokenValidTime = 10 * 60 * 1000L; // 토큰 유효시간 30분, 1000L는 1초
+    private long refreshTokenValidTime = 12 * 60 * 60 * 1000L; // 토큰 유효시간 12시간
 
     private final UserDetailsService userDetailsService;
 
@@ -47,6 +50,18 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    public String createRefreshToken(String userPk, String roles) {
+        Claims claims = Jwts.claims().setSubject(userPk); // JWT payload에 저장되는 정보 단위
+        claims.put("roles", roles); // 정보는 key /value 쌍으로 저장
+        Date now = new Date(); //현재 시간
+        return Jwts.builder()
+                .setClaims(claims) // 정보 저장
+                .setIssuedAt(now) // 토큰 발행 시간
+                .setExpiration(new Date(now.getTime() + refreshTokenValidTime)) // 토큰 만료 시간
+                .signWith(SignatureAlgorithm.HS256, secretKey) // H256 알고리즘과 signature에 들어갈 secret 값 세팅
+                .compact();
+    }
+
     // JWT 토큰에서 인증 정보 조회
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
@@ -62,7 +77,8 @@ public class JwtTokenProvider {
 
     // Request Header에서 token 값을 가져옴 "X-AUTH-TOKEN" : "TOKEN값" (key/value 형식)
     public String resolveToken(HttpServletRequest request) {
-        return request.getHeader("X-AUTH-TOKEN");
+//        return request.getHeader("X-AUTH-TOKEN");
+        return request.getHeader("ACCESS-TOKEN");
 
     }
 

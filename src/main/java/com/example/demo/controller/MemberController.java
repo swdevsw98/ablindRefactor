@@ -4,22 +4,25 @@ import com.example.demo.config.JwtTokenProvider;
 import com.example.demo.dto.JwtTokenDto;
 import com.example.demo.dto.MemberDataDto;
 import com.example.demo.dto.MemberFormDto;
+import com.example.demo.dto.RequestTokenDto;
 import com.example.demo.entity.Member;
+import com.example.demo.entity.RefreshToken;
 import com.example.demo.repository.MemberRepository;
+import com.example.demo.repository.RefreshTokenRepository;
 import com.example.demo.service.MemberService;
+import com.example.demo.service.MemberTokenService;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.Map;
+import java.util.Optional;
 
 @RequestMapping("/members")
 @RestController
@@ -27,10 +30,12 @@ import java.util.Map;
 //@CrossOrigin(origins = "*")
 public class MemberController {
 
+    private final MemberTokenService memberTokenService;
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberRepository memberRepository;
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @GetMapping("/new")
     public ResponseEntity memberForm(Model model){
@@ -61,9 +66,14 @@ public class MemberController {
         if (!passwordEncoder.matches(user.get("pass"), member.getPass())) {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
-
-        jwtTokenDto.setJwtToken(jwtTokenProvider.createToken(member.getEmail(), member.getRole()));
+        RefreshToken oldRefreshToken = refreshTokenRepository.findByEmail(member.getEmail())
+                .orElseThrow(IllegalStateException::new);
+        jwtTokenDto.setAccessToken(jwtTokenProvider.createToken(member.getEmail(), member.getRole()));
+        jwtTokenDto.setRefreshToken(jwtTokenProvider.createRefreshToken(member.getEmail(),member.getRole()));
         jwtTokenDto.setDate(jwtTokenProvider.jwtValidDate());
+        RefreshToken refreshToken = new RefreshToken(user.get("email"), jwtTokenDto.getRefreshToken());
+        oldRefreshToken.updateToken(refreshToken.getToken());
+        refreshTokenRepository.save(oldRefreshToken);
         return jwtTokenDto;
     }
 
@@ -95,5 +105,11 @@ public class MemberController {
         return memberDataDto;
     }
 
+    @PostMapping("/reissue")
+    public JwtTokenDto refreshToken(@RequestBody RequestTokenDto requestTokenDto) {
+        JwtTokenDto jwtTokenDto = memberTokenService.reissue(requestTokenDto);
+
+        return jwtTokenDto;
+    }
 
 }

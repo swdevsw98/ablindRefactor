@@ -37,10 +37,6 @@ public class MemberController {
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    @GetMapping("/new")
-    public ResponseEntity memberForm(Model model){
-        return new ResponseEntity("success", HttpStatus.OK);
-    }
 
     @PostMapping("/new")
     public ResponseEntity newMember(@Valid @RequestBody MemberFormDto memberFormDto, BindingResult bindingResult){
@@ -93,20 +89,15 @@ public class MemberController {
     @PostMapping("/username")
     public MemberDataDto currentUserName(@RequestBody Map<String, String> emailMap) throws NullPointerException {
         Member member = memberRepository.findByEmail(emailMap.get("email"));
-        MemberDataDto memberDataDto = new MemberDataDto();
-
-        memberDataDto.setName(member.getName());
-        memberDataDto.setAccount_name(member.getAccount_name());
-        memberDataDto.setAccount(member.getAccount());
-        memberDataDto.setAddress(member.getAddress());
-        memberDataDto.setEmail(member.getEmail());
-        memberDataDto.setPhoneNumber(member.getPhoneNumber());
+        MemberDataDto memberDataDto = new MemberDataDto(member);
 
         return memberDataDto;
     }
 
     @PostMapping("/reissue")
-    public JwtTokenDto refreshToken(@RequestBody RequestTokenDto requestTokenDto) {
+    public JwtTokenDto refreshToken(@RequestHeader(value = "ACCESS-TOKEN") String accessToken,
+                                    @RequestHeader(value = "REFRESH-TOKEN") String refreshToken ) {
+        RequestTokenDto requestTokenDto = new RequestTokenDto(accessToken, refreshToken);
         JwtTokenDto jwtTokenDto = memberTokenService.reissue(requestTokenDto);
 
         return jwtTokenDto;

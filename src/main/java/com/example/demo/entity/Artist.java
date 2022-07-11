@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @ToString
 @Data
@@ -25,6 +27,9 @@ public class Artist {
     private String profile;
 
     private String intro;
+
+    @OneToMany(mappedBy = "artistId")
+    private List<ArtistBoard> artistBoards = new ArrayList<>();
 
     public Artist (Long artist_id, String name, String profile, String intro){
         this.artistId = artist_id;

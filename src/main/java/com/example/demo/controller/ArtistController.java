@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.ArtistBoardDto;
 import com.example.demo.dto.ArtistInfoDto;
 import com.example.demo.entity.Artist;
+import com.example.demo.entity.ArtistBoard;
 import com.example.demo.repository.ArtistBoardRepository;
 import com.example.demo.repository.ArtistRepository;
 import com.example.demo.service.ArtistBoardService;
@@ -56,11 +57,16 @@ public class ArtistController {
     public ResponseEntity writeBoard(@PathVariable(name = "artistId") Long artist_id, @RequestBody Map<String, String> Board){
         Artist artist = artistRepository.findByArtistId(artist_id)
                 .orElseThrow(IllegalStateException::new);
-        System.out.println(Board.get("title") + "    " + Board.get("content"));
         ArtistBoardDto artistBoardDto = new ArtistBoardDto(Board.get("title"), Board.get("content"));
-        System.out.println(artistBoardDto.getTitle() + "   " + artistBoardDto.getContent());
-        artistBoardService.writeBoard(artist_id, artistBoardDto);
+        artistBoardService.writeBoard(artist.getArtistId(), artistBoardDto);
         return new ResponseEntity<>("ok", HttpStatus.OK);
+    }
+
+    @PutMapping("/{artistId}/board/update")
+    public ResponseEntity updateBoard(@RequestBody ArtistBoardDto artistBoardDto){
+        artistBoardService.updateBoard(artistBoardDto);
+
+        return new ResponseEntity("update success", HttpStatus.OK);
     }
 
 

@@ -8,6 +8,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ArtistBoardRepository extends JpaRepository<ArtistBoard, Long> {
-    Optional<ArtistBoard> findByArtistIdAndId(Artist artist_id, Long board_id);
     List<ArtistBoard> findByArtistId(Artist artist_id);
 }

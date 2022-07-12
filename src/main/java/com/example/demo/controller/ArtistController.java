@@ -1,9 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.ArtistBoardDto;
-import com.example.demo.dto.ArtistInfoDto;
+import com.example.demo.dto.artist.ArtistBoardDto;
+import com.example.demo.dto.artist.ArtistInfoDto;
 import com.example.demo.entity.Artist;
-import com.example.demo.entity.ArtistBoard;
 import com.example.demo.repository.ArtistBoardRepository;
 import com.example.demo.repository.ArtistRepository;
 import com.example.demo.service.ArtistBoardService;

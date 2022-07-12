@@ -1,8 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.config.JwtTokenProvider;
-import com.example.demo.dto.JwtTokenDto;
-import com.example.demo.dto.RequestTokenDto;
+import com.example.demo.dto.token.JwtTokenDto;
+import com.example.demo.dto.token.RequestTokenDto;
 import com.example.demo.entity.Member;
 import com.example.demo.entity.RefreshToken;
 import com.example.demo.repository.MemberRepository;

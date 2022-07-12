@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.dto.artist;
 
 import com.example.demo.entity.ArtistBoard;
 import lombok.Builder;

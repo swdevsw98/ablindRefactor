@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.dto.token;
 
 import com.example.demo.entity.RefreshToken;
 import lombok.Data;

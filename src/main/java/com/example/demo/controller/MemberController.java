@@ -1,10 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.config.JwtTokenProvider;
-import com.example.demo.dto.JwtTokenDto;
-import com.example.demo.dto.MemberDataDto;
-import com.example.demo.dto.MemberFormDto;
-import com.example.demo.dto.RequestTokenDto;
+import com.example.demo.dto.token.JwtTokenDto;
+import com.example.demo.dto.member.MemberDataDto;
+import com.example.demo.dto.member.MemberFormDto;
+import com.example.demo.dto.token.RequestTokenDto;
 import com.example.demo.entity.Member;
 import com.example.demo.entity.RefreshToken;
 import com.example.demo.repository.MemberRepository;
@@ -14,15 +14,12 @@ import com.example.demo.service.MemberTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Map;
-import java.util.Optional;
 
 @RequestMapping("/members")
 @RestController

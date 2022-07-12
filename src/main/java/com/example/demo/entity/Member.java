@@ -1,6 +1,6 @@
 package com.example.demo.entity;
 
-import com.example.demo.dto.MemberFormDto;
+import com.example.demo.dto.member.MemberFormDto;
 import lombok.Data;
 
 import lombok.ToString;

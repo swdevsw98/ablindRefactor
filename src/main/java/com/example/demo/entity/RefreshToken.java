@@ -19,7 +19,6 @@ public class RefreshToken {
     private Long Id;
 
     //key = email
-
     @Column(nullable = false, unique = false)
     private String email;
 

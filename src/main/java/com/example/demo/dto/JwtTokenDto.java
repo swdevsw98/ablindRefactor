@@ -1,5 +1,6 @@
 package com.example.demo.dto;
 
+import com.example.demo.entity.RefreshToken;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,4 +15,8 @@ public class JwtTokenDto {
     private String refreshToken;
 
     private Date date;
+
+    public void updateRefreshToken(RefreshToken refreshToken){
+        this.refreshToken = refreshToken.getToken();
+    }
 }

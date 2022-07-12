@@ -57,25 +57,39 @@ public class MemberController {
     // 로그인
     @PostMapping("/login")
     public JwtTokenDto login(@RequestBody Map<String, String> user) {
-        Member member = memberRepository.findByEmail(user.get("email"));
+        Member member = memberRepository.findByEmail(user.get("email"))
+                .orElseThrow(IllegalStateException::new);
         JwtTokenDto jwtTokenDto = new JwtTokenDto();
         if (!passwordEncoder.matches(user.get("pass"), member.getPass())) {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
+
         RefreshToken oldRefreshToken = refreshTokenRepository.findByEmail(member.getEmail())
-                .orElseThrow(IllegalStateException::new);
-        jwtTokenDto.setAccessToken(jwtTokenProvider.createToken(member.getEmail(), member.getRole()));
-        jwtTokenDto.setRefreshToken(jwtTokenProvider.createRefreshToken(member.getEmail(),member.getRole()));
-        jwtTokenDto.setDate(jwtTokenProvider.jwtValidDate());
-        RefreshToken refreshToken = new RefreshToken(user.get("email"), jwtTokenDto.getRefreshToken());
-        oldRefreshToken.updateToken(refreshToken.getToken());
-        refreshTokenRepository.save(oldRefreshToken);
+                .orElseGet(RefreshToken::new);
+        oldRefreshToken.setEmail(member.getEmail());
+
+        if(oldRefreshToken == null) {
+            oldRefreshToken.setToken(jwtTokenProvider.createRefreshToken(member.getEmail(),member.getRole()));
+            refreshTokenRepository.save(oldRefreshToken);
+            jwtTokenDto.updateRefreshToken(oldRefreshToken);
+        }
+
+        else {
+            jwtTokenDto.setAccessToken(jwtTokenProvider.createToken(member.getEmail(), member.getRole()));
+            jwtTokenDto.setRefreshToken(jwtTokenProvider.createRefreshToken(member.getEmail(), member.getRole()));
+            jwtTokenDto.setDate(jwtTokenProvider.jwtValidDate());
+            RefreshToken refreshToken = new RefreshToken(member.getEmail(), jwtTokenDto.getRefreshToken());
+            oldRefreshToken.updateToken(refreshToken.getToken());
+            refreshTokenRepository.save(oldRefreshToken);
+        }
+
         return jwtTokenDto;
     }
 
     @PostMapping("/login/id")
     public ResponseEntity duplicateId(@RequestBody Map<String, String> emailMap) throws NullPointerException{
-        Member member = memberRepository.findByEmail(emailMap.get("email"));
+        Member member = memberRepository.findByEmail(emailMap.get("email"))
+                .orElseThrow(IllegalStateException::new);
 
         if(member == null) {
             return new ResponseEntity("OK", HttpStatus.OK);
@@ -88,7 +102,8 @@ public class MemberController {
 
     @PostMapping("/username")
     public MemberDataDto currentUserName(@RequestBody Map<String, String> emailMap) throws NullPointerException {
-        Member member = memberRepository.findByEmail(emailMap.get("email"));
+        Member member = memberRepository.findByEmail(emailMap.get("email"))
+                .orElseThrow(IllegalStateException::new);
         MemberDataDto memberDataDto = new MemberDataDto(member);
 
         return memberDataDto;
@@ -98,6 +113,7 @@ public class MemberController {
     public JwtTokenDto refreshToken(@RequestHeader(value = "ACCESS-TOKEN") String accessToken,
                                     @RequestHeader(value = "REFRESH-TOKEN") String refreshToken ) {
         RequestTokenDto requestTokenDto = new RequestTokenDto(accessToken, refreshToken);
+
         JwtTokenDto jwtTokenDto = memberTokenService.reissue(requestTokenDto);
 
         return jwtTokenDto;

@@ -1,10 +1,13 @@
 package com.example.demo.entity;
 
+import com.example.demo.dto.ArtistBoardDto;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
 
+@NoArgsConstructor
 @ToString
 @Data
 @Table(name = "artist_board")
@@ -22,4 +25,10 @@ public class ArtistBoard {
     private String title;
 
     private String content;
+
+    public ArtistBoard(Artist artist, ArtistBoardDto artistBoardDto){
+        this.artistId = artist;
+        this.title = artistBoardDto.getTitle();
+        this.content = artistBoardDto.getContent();
+    }
 }

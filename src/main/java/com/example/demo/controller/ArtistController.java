@@ -6,6 +6,7 @@ import com.example.demo.entity.Artist;
 import com.example.demo.repository.ArtistBoardRepository;
 import com.example.demo.repository.ArtistRepository;
 import com.example.demo.service.ArtistBoardService;
+import com.example.demo.service.FollowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,7 @@ public class ArtistController {
     private final ArtistRepository artistRepository;
     private final ArtistBoardRepository artistBoardRepository;
     private final ArtistBoardService artistBoardService;
+    private final FollowService followService;
 
     //artist 개인페이지
     @GetMapping("")
@@ -61,6 +63,7 @@ public class ArtistController {
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
 
+    //응원글 수정
     @PutMapping("/{artistId}/board/update")
     public ResponseEntity updateBoard(@RequestBody ArtistBoardDto artistBoardDto){
         artistBoardService.updateBoard(artistBoardDto);
@@ -68,5 +71,19 @@ public class ArtistController {
         return new ResponseEntity("update success", HttpStatus.OK);
     }
 
+    //구독기능
+    @PostMapping("/{artistId}/follow")
+    public ResponseEntity followArtist(@PathVariable(name = "artistId") Long artist_id, @RequestBody Map<String, String> emailMap){
+        followService.save(artist_id, emailMap.get("email"));
 
+        return new ResponseEntity<>("follow", HttpStatus.OK);
+    }
+
+
+    //구독 취소 기능
+    @DeleteMapping("/{artistId}/unfollow")
+    public ResponseEntity unFollowArtist(@PathVariable(name = "artistId") Long artist_id, @RequestBody Map<String, String> emailMap) {
+        followService.delete(artist_id, emailMap.get("email"));
+        return new ResponseEntity("unFollow", HttpStatus.OK);
+    }
 }

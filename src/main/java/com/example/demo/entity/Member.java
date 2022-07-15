@@ -7,6 +7,8 @@ import lombok.ToString;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @ToString
@@ -36,6 +38,9 @@ public class Member {
     private String account_name;
 
     private String account;
+
+    @OneToMany(mappedBy = "followUserId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Follow> artistFollow = new ArrayList<>();
 
     public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder){
         Member member = new Member();

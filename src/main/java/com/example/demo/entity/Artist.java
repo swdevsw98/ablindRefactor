@@ -28,9 +28,11 @@ public class Artist {
 
     private String intro;
 
-    @OneToMany(mappedBy = "artistId")
+    @OneToMany(mappedBy = "artistId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ArtistBoard> artistBoards = new ArrayList<>();
 
+    @OneToMany(mappedBy = "followArtistId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Follow> userFollow = new ArrayList<>();
 
     public Artist (Long artist_id, String name, String profile, String intro){
         this.artistId = artist_id;

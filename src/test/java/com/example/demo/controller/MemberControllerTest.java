@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.member.MemberFormDto;
+import com.example.demo.dto.MemberFormDto;
 import com.example.demo.service.MemberService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

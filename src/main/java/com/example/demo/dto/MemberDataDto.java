@@ -1,4 +1,4 @@
-package com.example.demo.dto.member;
+package com.example.demo.dto;
 
 import com.example.demo.entity.Member;
 import lombok.Data;

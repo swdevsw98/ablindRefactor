@@ -1,4 +1,4 @@
-package com.example.demo.dto.artist;
+package com.example.demo.dto;
 
 import com.example.demo.entity.Artist;
 import lombok.Builder;
@@ -6,6 +6,8 @@ import lombok.Data;
 
 @Data
 public class ArtistInfoDto {
+
+    private Long artistId;
 
     private String name;
 
@@ -15,6 +17,7 @@ public class ArtistInfoDto {
 
     @Builder
     public ArtistInfoDto(Artist artist){
+        this.artistId = artist.getArtistId();
         this.name = artist.getName();
         this.profile = artist.getProfile();
         this.intro = artist.getIntro();

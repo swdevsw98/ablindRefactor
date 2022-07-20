@@ -1,10 +1,13 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.artist.ArtistBoardDto;
-import com.example.demo.dto.artist.ArtistInfoDto;
+import com.example.demo.dto.ArtistBoardDto;
+import com.example.demo.dto.ArtistDetailDto;
+import com.example.demo.dto.ArtistInfoDto;
+import com.example.demo.entity.ArtWorks;
 import com.example.demo.entity.Artist;
 import com.example.demo.repository.ArtistBoardRepository;
 import com.example.demo.repository.ArtistRepository;
+import com.example.demo.repository.ArtistWorkRepository;
 import com.example.demo.service.ArtistBoardService;
 import com.example.demo.service.FollowService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,7 @@ public class ArtistController {
     private final ArtistBoardRepository artistBoardRepository;
     private final ArtistBoardService artistBoardService;
     private final FollowService followService;
+    private final ArtistWorkRepository artistWorkRepository;
 
     //artist 개인페이지
     @GetMapping("")
@@ -41,6 +45,21 @@ public class ArtistController {
             artistInfoDtoList.add(artistInfoDto);
         }
         return artistInfoDtoList;
+    }
+
+    @GetMapping("/{artistId}")
+    public ArtistDetailDto detailArtistList(@PathVariable(name="artistId") Long artist_id){
+            Artist artist = artistRepository.findByArtistId(artist_id)
+                    .orElseThrow(() -> new IllegalStateException("없는 작가입니다."));
+            ArtistDetailDto artistDetailDto = new ArtistDetailDto(artist);
+            List<ArtWorks> works = artistWorkRepository.findAllByArtistWorkId(artist)
+                    .orElseThrow(() -> new IllegalStateException("없는 작품"));
+
+            for (ArtWorks work : works){
+                artistDetailDto.add(work);
+            }
+
+        return artistDetailDto;
     }
 
 

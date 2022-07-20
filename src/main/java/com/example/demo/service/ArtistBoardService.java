@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.artist.ArtistBoardDto;
+import com.example.demo.dto.ArtistBoardDto;
 import com.example.demo.entity.Artist;
 import com.example.demo.entity.ArtistBoard;
 import com.example.demo.repository.ArtistBoardRepository;

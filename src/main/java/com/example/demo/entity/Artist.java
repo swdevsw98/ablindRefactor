@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -22,11 +23,24 @@ public class Artist {
     @Column(name = "artist_id", unique = true)
     private Long artistId;
 
-    private String name;
-
     private String profile;
 
+    private String backGround;
+    private String name;
     private String intro;
+
+    private String subTitle;
+
+    private String detail;
+
+    private String youtube;
+
+    private String content;
+
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "artistWorkId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ArtWorks> works = new ArrayList<>();
 
     @OneToMany(mappedBy = "artistId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ArtistBoard> artistBoards = new ArrayList<>();

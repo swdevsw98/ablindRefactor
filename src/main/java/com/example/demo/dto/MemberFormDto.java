@@ -1,4 +1,4 @@
-package com.example.demo.dto.member;
+package com.example.demo.dto;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;

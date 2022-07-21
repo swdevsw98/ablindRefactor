@@ -5,11 +5,13 @@ import com.example.demo.dto.ArtistDetailDto;
 import com.example.demo.dto.ArtistInfoDto;
 import com.example.demo.entity.ArtWorks;
 import com.example.demo.entity.Artist;
+import com.example.demo.entity.Follow;
 import com.example.demo.repository.ArtistBoardRepository;
 import com.example.demo.repository.ArtistRepository;
 import com.example.demo.repository.ArtistWorkRepository;
 import com.example.demo.service.ArtistBoardService;
 import com.example.demo.service.FollowService;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -91,11 +93,20 @@ public class ArtistController {
     }
 
     //구독기능
-    @PostMapping("/{artistId}/follow")
-    public ResponseEntity followArtist(@PathVariable(name = "artistId") Long artist_id, @RequestBody Map<String, String> emailMap){
-        followService.save(artist_id, emailMap.get("email"));
+    @PostMapping("/{artistId}/follow/{price}")
+    public ResponseEntity followArtist(@PathVariable(name = "artistId") Long artist_id, @RequestBody Map<String, String> emailMap,
+                                       @PathVariable(name = "price") Long price){
+        followService.save(artist_id, emailMap.get("email"), price);
 
         return new ResponseEntity<>("follow", HttpStatus.OK);
+    }
+
+    //구독 확인 기능
+    @GetMapping("/{artistId}/follow")
+    public ResponseEntity followCheck(@PathVariable(name = "artistId") Long artist_id, @RequestBody Map<String, String> email){
+        followService.findByArtistIdAndUserId(artist_id, email.get("email"));
+
+        return new ResponseEntity("구독했어영 ㅋ", HttpStatus.OK);
     }
 
 

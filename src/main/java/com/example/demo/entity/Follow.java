@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,17 +17,22 @@ public class Follow {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "follow_artist_id")
     private Artist followArtistId;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "follow_user_id")
     private Member followUserId;
 
-    public Follow (Artist artist, Member member){
+    private Long price;
+
+    public Follow (Artist artist, Member member, Long price){
         this.followArtistId = artist;
         this.followUserId = member;
+        this.price = price;
     }
 
 }

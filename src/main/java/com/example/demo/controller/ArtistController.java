@@ -1,17 +1,15 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.ArtistBoardDto;
-import com.example.demo.dto.ArtistDetailDto;
-import com.example.demo.dto.ArtistInfoDto;
-import com.example.demo.entity.ArtWorks;
-import com.example.demo.entity.Artist;
-import com.example.demo.entity.Follow;
-import com.example.demo.repository.ArtistBoardRepository;
-import com.example.demo.repository.ArtistRepository;
-import com.example.demo.repository.ArtistWorkRepository;
-import com.example.demo.service.ArtistBoardService;
-import com.example.demo.service.FollowService;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.demo.dto.artist.ArtistBoardDto;
+import com.example.demo.dto.artist.ArtistDetailDto;
+import com.example.demo.dto.artist.ArtistInfoDto;
+import com.example.demo.entity.artist.ArtWorks;
+import com.example.demo.entity.artist.Artist;
+import com.example.demo.repository.artist.ArtistBoardRepository;
+import com.example.demo.repository.artist.ArtistRepository;
+import com.example.demo.repository.artist.ArtistWorkRepository;
+import com.example.demo.service.artist.ArtistBoardService;
+import com.example.demo.service.artist.FollowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

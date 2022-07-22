@@ -1,10 +1,10 @@
-package com.example.demo.service;
+package com.example.demo.service.artist;
 
-import com.example.demo.dto.ArtistBoardDto;
-import com.example.demo.entity.Artist;
-import com.example.demo.entity.ArtistBoard;
-import com.example.demo.repository.ArtistBoardRepository;
-import com.example.demo.repository.ArtistRepository;
+import com.example.demo.dto.artist.ArtistBoardDto;
+import com.example.demo.entity.artist.Artist;
+import com.example.demo.entity.artist.ArtistBoard;
+import com.example.demo.repository.artist.ArtistBoardRepository;
+import com.example.demo.repository.artist.ArtistRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

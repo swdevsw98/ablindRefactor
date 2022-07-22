@@ -4,14 +4,12 @@ import com.example.demo.dto.shop.ItemDto;
 import com.example.demo.dto.shop.OrderDto;
 import com.example.demo.entity.Member;
 import com.example.demo.entity.shop.Item;
-import com.example.demo.entity.shop.Order;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.shop.ItemRepository;
-import com.example.demo.service.OrderService;
-import com.example.demo.service.ShopService;
+import com.example.demo.service.shop.OrderService;
+import com.example.demo.service.shop.ShopService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

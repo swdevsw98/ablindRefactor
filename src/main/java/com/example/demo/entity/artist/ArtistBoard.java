@@ -1,6 +1,7 @@
-package com.example.demo.entity;
+package com.example.demo.entity.artist;
 
-import com.example.demo.dto.ArtistBoardDto;
+import com.example.demo.dto.artist.ArtistBoardDto;
+import com.example.demo.entity.artist.Artist;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;

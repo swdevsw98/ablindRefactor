@@ -1,6 +1,6 @@
-package com.example.demo.dto;
+package com.example.demo.dto.artist;
 
-import com.example.demo.entity.Artist;
+import com.example.demo.entity.artist.Artist;
 import lombok.Builder;
 import lombok.Data;
 

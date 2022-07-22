@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import com.example.demo.dto.MemberFormDto;
+import com.example.demo.entity.artist.Follow;
 import com.example.demo.entity.shop.Order;
 import lombok.Data;
 

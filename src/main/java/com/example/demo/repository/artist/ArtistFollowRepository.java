@@ -1,7 +1,7 @@
-package com.example.demo.repository;
+package com.example.demo.repository.artist;
 
-import com.example.demo.entity.Artist;
-import com.example.demo.entity.Follow;
+import com.example.demo.entity.artist.Artist;
+import com.example.demo.entity.artist.Follow;
 import com.example.demo.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 

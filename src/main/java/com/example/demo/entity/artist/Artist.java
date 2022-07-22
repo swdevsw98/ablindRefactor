@@ -1,4 +1,4 @@
-package com.example.demo.entity;
+package com.example.demo.entity.artist;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;

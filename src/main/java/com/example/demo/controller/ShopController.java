@@ -4,6 +4,7 @@ import com.example.demo.dto.shop.ItemDto;
 import com.example.demo.dto.shop.OrderDto;
 import com.example.demo.entity.Member;
 import com.example.demo.entity.shop.Item;
+import com.example.demo.entity.shop.Order;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.shop.ItemRepository;
 import com.example.demo.service.shop.OrderService;
@@ -52,7 +53,8 @@ public class ShopController {
 
     //order 주문
     @PostMapping("/order")
-    public ResponseEntity order(@RequestBody OrderDto orderDto) {
+    @ResponseBody
+    public OrderDto order(@RequestBody OrderDto orderDto) {
         Member member = memberRepository.findByEmail(orderDto.getEmail())
                 .orElseThrow(() -> new IllegalStateException("그런 고객 없어요"));
         Item item = itemRepository.findByName(orderDto.getItem())
@@ -61,6 +63,16 @@ public class ShopController {
     }
 
     //order 변경
+    @PutMapping("/order/update")
+    public ResponseEntity updateOrder(@RequestBody OrderDto orderDto) {
+        Item item = itemRepository.findByName(orderDto.getItem())
+                .orElseThrow(() -> new IllegalStateException("그런 상품 없어요"));
+        return orderService.updateOrder(item, orderDto.getCount(), orderDto.getId());
+    }
 
     //order 취소
+    @DeleteMapping("/order/cancel")
+    public ResponseEntity cancelOrder(@RequestBody OrderDto orderDto) {
+            return orderService.cancelOrder(orderDto.getId());
+    }
 }

@@ -26,7 +26,7 @@ public class Order extends BaseEntity {
 
     private String orderStatus;
 
-    @OneToMany(mappedBy = "orderId")
+    @OneToMany(mappedBy = "orderId", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
     @Builder

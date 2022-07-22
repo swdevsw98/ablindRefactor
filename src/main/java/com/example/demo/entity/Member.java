@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import com.example.demo.dto.MemberFormDto;
+import com.example.demo.entity.shop.Order;
 import lombok.Data;
 
 import lombok.ToString;
@@ -38,6 +39,9 @@ public class Member {
     private String account_name;
 
     private String account;
+
+    @OneToMany(mappedBy = "memberId")
+    private List<Order> orders = new ArrayList<>();
 
     @OneToMany(mappedBy = "followUserId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Follow> artistFollow = new ArrayList<>();

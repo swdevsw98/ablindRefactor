@@ -16,6 +16,7 @@ import java.util.List;
 public class ShopService {
     private final ItemRepository itemRepository;
 
+    //메인페이지
     public List<ItemDto> list() {
         List<Item> items = itemRepository.findAll();
         List<ItemDto> itemDtoList = new ArrayList<>();
@@ -33,6 +34,7 @@ public class ShopService {
         return itemDtoList;
     }
 
+    //제목 검색 필터
     public List<ItemDto> titleFilter(String keyword) {
         List<Item> items = itemRepository.findByNameContaining(keyword)
                 .orElseThrow(()-> new IllegalStateException("상품 없어요"));
@@ -51,6 +53,7 @@ public class ShopService {
         return itemTitleFilterDtoList;
     }
 
+    //카테고리 필터
     public List<ItemDto> categoryFilter(String keyword) {
         List<Item> items = itemRepository.findByCategoryContaining(keyword)
                 .orElseThrow(() -> new IllegalStateException("상품 없어요"));

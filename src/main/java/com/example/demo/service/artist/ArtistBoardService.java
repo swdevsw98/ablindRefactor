@@ -1,8 +1,10 @@
 package com.example.demo.service.artist;
 
 import com.example.demo.dto.artist.ArtistBoardDto;
+import com.example.demo.entity.Member;
 import com.example.demo.entity.artist.Artist;
 import com.example.demo.entity.artist.ArtistBoard;
+import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.artist.ArtistBoardRepository;
 import com.example.demo.repository.artist.ArtistRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +22,15 @@ import java.util.List;
 public class ArtistBoardService {
     private final ArtistBoardRepository artistBoardRepository;
     private final ArtistRepository artistRepository;
+    private final MemberRepository memberRepository;
 
     public ResponseEntity writeBoard(Long artistId, ArtistBoardDto artistBoardDto){
         Artist artist = artistRepository.findByArtistId(artistId)
                 .orElseThrow(IllegalStateException::new);
+        Member member = memberRepository.findByEmail(artistBoardDto.getEmail())
+                .orElseThrow(() -> new IllegalStateException("없는고객"));
+        artistBoardDto.setCreator(member.getName());
+
         ArtistBoard artistBoard = new ArtistBoard(artist, artistBoardDto);
         artistBoardRepository.save(artistBoard);
 
@@ -49,11 +56,19 @@ public class ArtistBoardService {
                     .boardId(board.getId())
                     .title(board.getTitle())
                     .content(board.getContent())
+                    .creator(board.getCreator())
+                    .email(board.getEmail())
+                    .createdAt(board.getCreatedAt())
+                    .updatedAt(board.getUpdatedAt())
                     .build();
 
             boardDtoList.add(boardDto);
         }
 
         return boardDtoList;
+    }
+
+    public void deleteBoard(ArtistBoardDto artistBoardDto) {
+        artistBoardRepository.deleteById(artistBoardDto.getBoardId());
     }
 }

@@ -31,7 +31,7 @@ public class ArtistController {
     private final FollowService followService;
     private final ArtistWorkRepository artistWorkRepository;
 
-    //artist 개인페이지
+    //artist 작가 리스트 출력
     @GetMapping("")
     public List<ArtistInfoDto> privateArtist() throws NullPointerException {
         List<Artist> artists = artistRepository.findAll();
@@ -47,6 +47,7 @@ public class ArtistController {
         return artistInfoDtoList;
     }
 
+    //작가 개인페이지
     @GetMapping("/{artistId}")
     public ArtistDetailDto detailArtistList(@PathVariable(name="artistId") Long artist_id){
             Artist artist = artistRepository.findByArtistId(artist_id)
@@ -77,7 +78,12 @@ public class ArtistController {
     public ResponseEntity writeBoard(@PathVariable(name = "artistId") Long artist_id, @RequestBody Map<String, String> Board){
         Artist artist = artistRepository.findByArtistId(artist_id)
                 .orElseThrow(IllegalStateException::new);
-        ArtistBoardDto artistBoardDto = new ArtistBoardDto(Board.get("title"), Board.get("content"));
+        ArtistBoardDto artistBoardDto = ArtistBoardDto.builder()
+                        .title(Board.get("title"))
+                        .content(Board.get("content"))
+                        .email(Board.get("email"))
+                        .build();
+
         artistBoardService.writeBoard(artist.getArtistId(), artistBoardDto);
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
@@ -88,6 +94,14 @@ public class ArtistController {
         artistBoardService.updateBoard(artistBoardDto);
 
         return new ResponseEntity("update success", HttpStatus.OK);
+    }
+
+    //응원글 삭제
+    @DeleteMapping("/{artistId}/board/delete")
+    public ResponseEntity deleteBoard(@RequestBody ArtistBoardDto artistBoardDto){
+        artistBoardService.deleteBoard(artistBoardDto);
+
+        return new ResponseEntity("delete success" , HttpStatus.OK);
     }
 
     //구독기능

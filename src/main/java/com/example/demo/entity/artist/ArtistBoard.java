@@ -1,7 +1,9 @@
 package com.example.demo.entity.artist;
 
 import com.example.demo.dto.artist.ArtistBoardDto;
+import com.example.demo.entity.BaseEntity;
 import com.example.demo.entity.artist.Artist;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -13,7 +15,7 @@ import javax.persistence.*;
 @Data
 @Table(name = "artist_board")
 @Entity
-public class ArtistBoard {
+public class ArtistBoard extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,9 +29,16 @@ public class ArtistBoard {
 
     private String content;
 
+    private String email;
+
+    private String creator;
+
+    @Builder
     public ArtistBoard(Artist artist, ArtistBoardDto artistBoardDto){
         this.artistId = artist;
         this.title = artistBoardDto.getTitle();
         this.content = artistBoardDto.getContent();
+        this.email = artistBoardDto.getEmail();
+        this.creator = artistBoardDto.getCreator();
     }
 }

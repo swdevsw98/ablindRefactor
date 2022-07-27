@@ -34,7 +34,7 @@ public class ShopController {
 
     //shop main
     @GetMapping("")
-    public List<ItemDto> listItem(){
+    public List<ItemDto> listItem() {
         List<ItemDto> list = shopService.list();
 
         return list;
@@ -50,7 +50,7 @@ public class ShopController {
 
     //shop 카테고리 필터
     @GetMapping("/category/filter")
-    public List<ItemDto> filterCategory(@RequestParam(value = "keyword") String keyword){
+    public List<ItemDto> filterCategory(@RequestParam(value = "keyword") String keyword) {
         List<ItemDto> list = shopService.categoryFilter(keyword);
 
         return list;
@@ -78,27 +78,36 @@ public class ShopController {
     //order 취소
     @DeleteMapping("/order/cancel")
     public ResponseEntity cancelOrder(@RequestBody OrderDto orderDto) {
-            return orderService.cancelOrder(orderDto.getId());
+        return orderService.cancelOrder(orderDto.getId());
     }
 
     //review 게시판 불러오기
     @GetMapping("/{itemId}/review")
-    public List<ItemReviewDto> listReviewBoard(@PathVariable(name = "itemId") Item item_id){
+    public List<ItemReviewDto> listReviewBoard(@PathVariable(name = "itemId") Item item_id) {
         List<ItemReviewDto> list = itemReviewService.getReviewBoardList(item_id);
         return list;
     }
 
     //review 게시판 생성
     @PostMapping("/{itemId}/review")
-    public ResponseEntity writeReview(@PathVariable(name = "itemId") Long item_id, @RequestBody Map<String, String> Board){
+    public ResponseEntity writeReview(@PathVariable(name = "itemId") Long item_id, @RequestBody ItemReviewDto itemReviewDto) {
         Item item = itemRepository.findById(item_id)
                 .orElseThrow(() -> new IllegalStateException("없는 상품 리뷰 등록"));
-        ItemReviewDto itemReviewDto = ItemReviewDto.builder()
-                .itemId(item.getId())
-                .title(Board.get("title"))
-                .content(Board.get("content"))
-                .build();
         itemReviewService.writeReview(item, itemReviewDto);
         return new ResponseEntity<>("게시글 등록 완료", HttpStatus.OK);
+    }
+
+    //review 게시판 수정
+    @PutMapping("/{itemId}/review/update")
+    public ResponseEntity updateReview(@RequestBody ItemReviewDto itemReviewDto){
+        itemReviewService.updateReview(itemReviewDto);
+        return new ResponseEntity("게시글 수정 완료", HttpStatus.OK);
+    }
+
+    //게시판 삭제
+    @DeleteMapping("/{itemId}/review/delete")
+    public ResponseEntity deleteReview(@RequestBody ItemReviewDto itemReviewDto){
+        itemReviewService.deleteReview(itemReviewDto);
+        return new ResponseEntity("게시글 삭제 완료", HttpStatus.OK);
     }
 }

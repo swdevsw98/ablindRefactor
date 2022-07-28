@@ -31,7 +31,7 @@ public class ArtistBoard extends BaseEntity {
 
     private String email;
 
-    private String creator;
+    private String writer;
 
     @Builder
     public ArtistBoard(Artist artist, ArtistBoardDto artistBoardDto){
@@ -39,6 +39,6 @@ public class ArtistBoard extends BaseEntity {
         this.title = artistBoardDto.getTitle();
         this.content = artistBoardDto.getContent();
         this.email = artistBoardDto.getEmail();
-        this.creator = artistBoardDto.getCreator();
+        this.writer = artistBoardDto.getWriter();
     }
 }

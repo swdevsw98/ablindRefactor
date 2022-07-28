@@ -20,7 +20,7 @@ public class ArtistBoardDto {
 
     private String email;
 
-    private String creator;
+    private String writer;
 
     private LocalDateTime createdAt;
 
@@ -28,12 +28,12 @@ public class ArtistBoardDto {
 
     @Builder
     public ArtistBoardDto(Long boardId, String title, String content, String email,
-                          String creator, LocalDateTime createdAt, LocalDateTime updatedAt){
+                          String writer, LocalDateTime createdAt, LocalDateTime updatedAt){
         this.boardId = boardId;
         this.title = title;
         this.content = content;
         this.email = email;
-        this.creator = creator;
+        this.writer = writer;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }

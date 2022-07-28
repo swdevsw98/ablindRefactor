@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.shop.ItemDto;
+import com.example.demo.dto.shop.ItemQnaDto;
 import com.example.demo.dto.shop.ItemReviewDto;
 import com.example.demo.dto.shop.OrderDto;
 import com.example.demo.entity.Member;
@@ -9,6 +10,7 @@ import com.example.demo.entity.shop.ItemReviewBoard;
 import com.example.demo.entity.shop.Order;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.shop.ItemRepository;
+import com.example.demo.service.shop.ItemQnaService;
 import com.example.demo.service.shop.ItemReviewService;
 import com.example.demo.service.shop.OrderService;
 import com.example.demo.service.shop.ShopService;
@@ -30,7 +32,7 @@ public class ShopController {
     private final OrderService orderService;
     private final ItemRepository itemRepository;
     private final ItemReviewService itemReviewService;
-
+    private final ItemQnaService itemQnaService;
 
     //shop main
     @GetMapping("")
@@ -104,10 +106,40 @@ public class ShopController {
         return new ResponseEntity("게시글 수정 완료", HttpStatus.OK);
     }
 
-    //게시판 삭제
+    //review게시판 삭제
     @DeleteMapping("/{itemId}/review/delete")
     public ResponseEntity deleteReview(@RequestBody ItemReviewDto itemReviewDto){
         itemReviewService.deleteReview(itemReviewDto);
+        return new ResponseEntity("게시글 삭제 완료", HttpStatus.OK);
+    }
+
+    //qna 게시판 불러오기
+    @GetMapping("/{itemId}/qna")
+    public List<ItemQnaDto> listQnaBoard(@PathVariable(name = "itemId") Item item_id) {
+        List<ItemQnaDto> list = itemQnaService.getQnaBoardList(item_id);
+        return list;
+    }
+
+    //review 게시판 생성
+    @PostMapping("/{itemId}/qna")
+    public ResponseEntity writeQna(@PathVariable(name = "itemId") Long item_id, @RequestBody ItemQnaDto itemQnaDto) {
+        Item item = itemRepository.findById(item_id)
+                .orElseThrow(() -> new IllegalStateException("없는 상품 리뷰 등록"));
+        itemQnaService.writeQna(item, itemQnaDto);
+        return new ResponseEntity<>("게시글 등록 완료", HttpStatus.OK);
+    }
+
+    //review 게시판 수정
+    @PutMapping("/{itemId}/qna/update")
+    public ResponseEntity updateQna(@RequestBody ItemQnaDto itemQnaDto){
+        itemQnaService.updateQna(itemQnaDto);
+        return new ResponseEntity("게시글 수정 완료", HttpStatus.OK);
+    }
+
+    //review게시판 삭제
+    @DeleteMapping("/{itemId}/qna/delete")
+    public ResponseEntity deleteQna(@RequestBody ItemQnaDto itemQnaDto){
+        itemQnaService.deleteQna(itemQnaDto);
         return new ResponseEntity("게시글 삭제 완료", HttpStatus.OK);
     }
 }

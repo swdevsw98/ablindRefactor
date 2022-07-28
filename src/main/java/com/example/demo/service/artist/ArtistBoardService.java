@@ -29,7 +29,7 @@ public class ArtistBoardService {
                 .orElseThrow(IllegalStateException::new);
         Member member = memberRepository.findByEmail(artistBoardDto.getEmail())
                 .orElseThrow(() -> new IllegalStateException("없는고객"));
-        artistBoardDto.setCreator(member.getName());
+        artistBoardDto.setWriter(member.getName());
 
         ArtistBoard artistBoard = new ArtistBoard(artist, artistBoardDto);
         artistBoardRepository.save(artistBoard);
@@ -56,7 +56,7 @@ public class ArtistBoardService {
                     .boardId(board.getId())
                     .title(board.getTitle())
                     .content(board.getContent())
-                    .creator(board.getCreator())
+                    .writer(board.getWriter())
                     .email(board.getEmail())
                     .createdAt(board.getCreatedAt())
                     .updatedAt(board.getUpdatedAt())

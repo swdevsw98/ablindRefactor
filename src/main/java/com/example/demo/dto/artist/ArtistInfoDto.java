@@ -17,7 +17,7 @@ public class ArtistInfoDto {
 
     @Builder
     public ArtistInfoDto(Artist artist){
-        this.artistId = artist.getArtistId();
+        this.artistId = artist.getId();
         this.name = artist.getName();
         this.profile = artist.getProfile();
         this.intro = artist.getIntro();

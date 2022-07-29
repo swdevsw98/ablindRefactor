@@ -20,9 +20,6 @@ public class Artist {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "artist_id", unique = true)
-    private Long artistId;
-
     private String profile;
 
     private String backGround;
@@ -49,7 +46,6 @@ public class Artist {
     private List<Follow> userFollow = new ArrayList<>();
 
     public Artist (Long artist_id, String name, String profile, String intro){
-        this.artistId = artist_id;
         this.name = name;
         this.profile = profile;
         this.intro = intro;

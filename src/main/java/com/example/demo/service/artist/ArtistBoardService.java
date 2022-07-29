@@ -25,7 +25,7 @@ public class ArtistBoardService {
     private final MemberRepository memberRepository;
 
     public ResponseEntity writeBoard(Long artistId, ArtistBoardDto artistBoardDto){
-        Artist artist = artistRepository.findByArtistId(artistId)
+        Artist artist = artistRepository.findById(artistId)
                 .orElseThrow(IllegalStateException::new);
         Member member = memberRepository.findByEmail(artistBoardDto.getEmail())
                 .orElseThrow(() -> new IllegalStateException("없는고객"));

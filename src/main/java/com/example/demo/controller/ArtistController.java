@@ -50,7 +50,7 @@ public class ArtistController {
     //작가 개인페이지
     @GetMapping("/{artistId}")
     public ArtistDetailDto detailArtistList(@PathVariable(name="artistId") Long artist_id){
-            Artist artist = artistRepository.findByArtistId(artist_id)
+            Artist artist = artistRepository.findById(artist_id)
                     .orElseThrow(() -> new IllegalStateException("없는 작가입니다."));
             ArtistDetailDto artistDetailDto = new ArtistDetailDto(artist);
             List<ArtWorks> works = artistWorkRepository.findAllByArtistWorkId(artist)
@@ -76,15 +76,15 @@ public class ArtistController {
     //응원글 작성
     @PostMapping("/{artistId}/board")
     public ResponseEntity writeBoard(@PathVariable(name = "artistId") Long artist_id, @RequestBody Map<String, String> Board){
-        Artist artist = artistRepository.findByArtistId(artist_id)
-                .orElseThrow(IllegalStateException::new);
+//        Artist artist = artistRepository.findByArtistId(artist_id)
+//                .orElseThrow(IllegalStateException::new);
         ArtistBoardDto artistBoardDto = ArtistBoardDto.builder()
                         .title(Board.get("title"))
                         .content(Board.get("content"))
                         .email(Board.get("email"))
                         .build();
 
-        artistBoardService.writeBoard(artist.getArtistId(), artistBoardDto);
+        artistBoardService.writeBoard(artist_id, artistBoardDto);
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
 

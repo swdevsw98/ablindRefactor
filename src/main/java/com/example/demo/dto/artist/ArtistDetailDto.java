@@ -34,7 +34,7 @@ public class ArtistDetailDto {
 
     @Builder
     public  ArtistDetailDto(Artist artist){
-        this.artistId = artist.getArtistId();
+        this.artistId = artist.getId();
         this.profile = artist.getProfile();
         this.backGround = artist.getBackGround();
         this.name = artist.getName();

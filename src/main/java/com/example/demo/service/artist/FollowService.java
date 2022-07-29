@@ -24,7 +24,7 @@ public class FollowService {
 
     //중복처리 해야함
     public ResponseEntity save(Long artist_id, String email, Long price){
-        Artist followArtistId = artistRepository.findByArtistId(artist_id)
+        Artist followArtistId = artistRepository.findById(artist_id)
                 .orElseThrow(IllegalStateException::new);
         Member followUserId = memberRepository.findByEmail(email)
                 .orElseThrow(IllegalStateException::new);
@@ -40,7 +40,7 @@ public class FollowService {
 
     //확인하는 로직
     public Follow findByArtistIdAndUserId(Long artist_id, String email){
-        Artist followArtistId = artistRepository.findByArtistId(artist_id)
+        Artist followArtistId = artistRepository.findById(artist_id)
                 .orElseThrow(IllegalStateException::new);
         Member followUserId = memberRepository.findByEmail(email)
                 .orElseThrow(IllegalStateException::new);
@@ -52,7 +52,7 @@ public class FollowService {
 
 
     public ResponseEntity delete(Long artist_id, String email){
-        Artist followArtistId = artistRepository.findByArtistId(artist_id)
+        Artist followArtistId = artistRepository.findById(artist_id)
                 .orElseThrow(IllegalStateException::new);
         Member followUserId = memberRepository.findByEmail(email)
                 .orElseThrow(IllegalStateException::new);

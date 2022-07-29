@@ -41,6 +41,8 @@ public class Member {
 
     private String account;
 
+    private Long cartId;
+
     @OneToMany(mappedBy = "memberId")
     private List<Order> orders = new ArrayList<>();
 

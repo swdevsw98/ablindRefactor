@@ -114,7 +114,7 @@ public class ArtistController {
     }
 
     //구독 확인 기능
-    @GetMapping("/{artistId}/follow")
+    @PostMapping("/{artistId}/follow")
     public ResponseEntity followCheck(@PathVariable(name = "artistId") Long artist_id, @RequestBody Map<String, String> email){
         followService.findByArtistIdAndUserId(artist_id, email.get("email"));
 

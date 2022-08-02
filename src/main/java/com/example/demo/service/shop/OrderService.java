@@ -2,9 +2,12 @@ package com.example.demo.service.shop;
 
 import com.example.demo.dto.shop.OrderDto;
 import com.example.demo.entity.Member;
+import com.example.demo.entity.cart.Delivery;
+import com.example.demo.entity.cart.DeliveryStatus;
 import com.example.demo.entity.shop.Item;
 import com.example.demo.entity.shop.Order;
 import com.example.demo.entity.shop.OrderItem;
+import com.example.demo.repository.cart.DeliveryRepository;
 import com.example.demo.repository.shop.OrderItemRepository;
 import com.example.demo.repository.shop.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +24,7 @@ import javax.transaction.Transactional;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
+    private final DeliveryRepository deliveryRepository;
 
     //save
     public OrderDto save(Member member, Item item, Long count){
@@ -34,6 +38,7 @@ public class OrderService {
                 .item(item)
                 .count(count)
                 .build();
+
 
         orderRepository.save(order);
         orderItemRepository.save(orderItem);

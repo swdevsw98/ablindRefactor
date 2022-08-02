@@ -23,6 +23,8 @@ public class ShopService {
 
         for(Item item : items){
             ItemDto itemDto = ItemDto.builder()
+                    .author(item.getAuthor())
+                    .url(item.getUrl())
                     .itemId(item.getId())
                     .name(item.getName())
                     .price(item.getPrice())

@@ -8,8 +8,10 @@ import com.example.demo.entity.Member;
 import com.example.demo.entity.shop.Item;
 import com.example.demo.entity.shop.ItemReviewBoard;
 import com.example.demo.entity.shop.Order;
+import com.example.demo.entity.shop.ShopBanner;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.shop.ItemRepository;
+import com.example.demo.repository.shop.ShopBannerRepository;
 import com.example.demo.service.shop.ItemQnaService;
 import com.example.demo.service.shop.ItemReviewService;
 import com.example.demo.service.shop.OrderService;
@@ -33,6 +35,7 @@ public class ShopController {
     private final ItemRepository itemRepository;
     private final ItemReviewService itemReviewService;
     private final ItemQnaService itemQnaService;
+    private final ShopBannerRepository shopBannerRepository;
 
     //shop main
     @GetMapping("")
@@ -40,6 +43,12 @@ public class ShopController {
         List<ItemDto> list = shopService.list();
 
         return list;
+    }
+
+    //shop banner
+    @GetMapping("/banner")
+    public List<ShopBanner> listBanner() {
+        return shopBannerRepository.findAll();
     }
 
     //shop 검색 필터

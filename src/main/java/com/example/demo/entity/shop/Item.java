@@ -19,6 +19,10 @@ public class Item {
 
     private String name;
 
+    private String author;
+
+    private String url;
+
     private Long price;
 
     private String category;

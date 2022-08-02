@@ -14,10 +14,16 @@ public class ItemDto {
 
     private Long price;
 
+    private String author;
+
+    private String url;
+
     @Builder
-    public ItemDto(Long itemId, String name, Long price){
+    public ItemDto(Long itemId, String name, Long price, String author, String url){
         this.itemId = itemId;
         this.name = name;
         this.price = price;
+        this.author = author;
+        this.url = url;
     }
 }

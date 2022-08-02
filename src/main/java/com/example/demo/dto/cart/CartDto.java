@@ -12,4 +12,7 @@ public class CartDto {
     private Long itemId;
 
     private Long count;
+
+    private Long id;
+
 }

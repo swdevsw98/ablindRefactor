@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/mypage")
 @RestController
@@ -31,4 +32,20 @@ public class MyPageController {
 
         return new ResponseEntity("장바구니에 추가 됐습니다~", HttpStatus.OK);
     }
+
+    //장바구니 수정
+    @PutMapping("/cart/update")
+    public ResponseEntity updateCart(@RequestBody CartDto cartDto){
+        cartService.updateCart(cartDto);
+
+        return new ResponseEntity("장바구니 갯수 수정~~", HttpStatus.OK);
+    }
+
+    //장바구니 삭제
+    @DeleteMapping("/cart/delete")
+    public ResponseEntity deleteCartItem(@RequestBody CartDto cartDto){
+        cartService.deleteCart(cartDto);
+        return new ResponseEntity("아이템 삭제~", HttpStatus.OK);
+    }
+
 }

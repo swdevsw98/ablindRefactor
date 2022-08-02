@@ -57,4 +57,18 @@ public class CartService {
         return  cartItemRepository.findAllByCartId(cart)
                 .orElseThrow(() -> new IllegalStateException("없는 아이템"));
     }
+
+    public void updateCart(CartDto cartDto){
+        CartItem cartItem = cartItemRepository.findById(cartDto.getId())
+                .orElseThrow(() -> new IllegalStateException("그런 아이템 없음"));
+        if(cartDto.getCount() == 0){
+            cartItemRepository.deleteById(cartItem.getId());
+        } else{
+            cartItem.setCount(cartDto.getCount());
+        }
+    }
+
+    public void deleteCart(CartDto cartDto) {
+        cartItemRepository.deleteById(cartDto.getId());
+    }
 }

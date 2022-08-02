@@ -18,14 +18,9 @@ public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
 
     public Member savedMember(Member member){
-        validateMember(member);
         return memberRepository.save(member); //save하면 entity가 리턴
     }
 
-    public void validateMember(Member member){
-        Member findMember = memberRepository.findByEmail(member.getEmail())
-                .orElseThrow(IllegalStateException::new);
-    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

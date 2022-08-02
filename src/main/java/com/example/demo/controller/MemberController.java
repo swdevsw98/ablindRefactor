@@ -36,16 +36,15 @@ public class MemberController {
 
 
     @PostMapping("/new")
-    public ResponseEntity newMember(@Valid @RequestBody MemberFormDto memberFormDto, BindingResult bindingResult){
+    public ResponseEntity newMember(@RequestBody MemberFormDto memberFormDto, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return new ResponseEntity("binding error", HttpStatus.NOT_FOUND);
         }
-
+        System.out.println(memberFormDto);
         try {
             Member createMember = Member.createMember(memberFormDto, passwordEncoder);
             memberService.savedMember(createMember);
         } catch (IllegalStateException e){
-            System.out.println(e.getMessage());
             return new ResponseEntity("IllegalStateException", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity("success", HttpStatus.OK);
@@ -88,12 +87,7 @@ public class MemberController {
         Member member = memberRepository.findByEmail(emailMap.get("email"))
                 .orElseThrow(IllegalStateException::new);
 
-        if(member == null) {
-            return new ResponseEntity("OK", HttpStatus.OK);
-        }
-
         return new ResponseEntity("No", HttpStatus.FORBIDDEN);
-
 
     }
 

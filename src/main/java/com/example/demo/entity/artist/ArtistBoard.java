@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @ToString
@@ -32,6 +34,9 @@ public class ArtistBoard extends BaseEntity {
     private String email;
 
     private String writer;
+
+    @OneToMany(mappedBy = "artistBoard", cascade = CascadeType.REMOVE)
+    private List<Comment> comments = new ArrayList<>();
 
     @Builder
     public ArtistBoard(Artist artist, ArtistBoardDto artistBoardDto){

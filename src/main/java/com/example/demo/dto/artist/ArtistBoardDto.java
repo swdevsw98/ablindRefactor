@@ -22,13 +22,13 @@ public class ArtistBoardDto {
 
     private String writer;
 
-    private LocalDateTime createdAt;
+    private String createdAt;
 
-    private LocalDateTime updatedAt;
+    private String updatedAt;
 
     @Builder
     public ArtistBoardDto(Long boardId, String title, String content, String email,
-                          String writer, LocalDateTime createdAt, LocalDateTime updatedAt){
+                          String writer, String createdAt, String updatedAt){
         this.boardId = boardId;
         this.title = title;
         this.content = content;

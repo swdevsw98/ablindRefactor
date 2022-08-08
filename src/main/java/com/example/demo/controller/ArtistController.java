@@ -1,13 +1,16 @@
 package com.example.demo.controller;
 
+import com.example.demo.config.JwtTokenProvider;
 import com.example.demo.dto.artist.ArtistBoardDto;
 import com.example.demo.dto.artist.ArtistDetailDto;
 import com.example.demo.dto.artist.ArtistInfoDto;
+import com.example.demo.dto.artist.CommentDto;
 import com.example.demo.entity.artist.ArtWorks;
 import com.example.demo.entity.artist.Artist;
 import com.example.demo.repository.artist.ArtistBoardRepository;
 import com.example.demo.repository.artist.ArtistRepository;
 import com.example.demo.repository.artist.ArtistWorkRepository;
+import com.example.demo.service.artist.ArtistBoardCommentService;
 import com.example.demo.service.artist.ArtistBoardService;
 import com.example.demo.service.artist.FollowService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,11 +30,13 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ArtistController {
 
+    private final JwtTokenProvider jwtTokenProvider;
     private final ArtistRepository artistRepository;
     private final ArtistBoardRepository artistBoardRepository;
     private final ArtistBoardService artistBoardService;
     private final FollowService followService;
     private final ArtistWorkRepository artistWorkRepository;
+    private final ArtistBoardCommentService artistBoardCommentService;
 
     //artist 작가 리스트 출력
     @GetMapping("")
@@ -127,5 +134,32 @@ public class ArtistController {
     public ResponseEntity unFollowArtist(@PathVariable(name = "artistId") Long artist_id, @RequestBody Map<String, String> emailMap) {
         followService.delete(artist_id, emailMap.get("email"));
         return new ResponseEntity("unFollow", HttpStatus.OK);
+    }
+
+    //해당 게시글 댓글 불러오기
+    @GetMapping("/{artistId}/board/{boardId}")
+    public List<CommentDto> getBoardComment(@PathVariable(name = "boardId") Long boardId){
+        return artistBoardCommentService.getComment(boardId);
+    }
+
+    //댓글
+    @PostMapping("/{artistId}/board/{boardId}")
+    public ResponseEntity writeBoardComment(ServletRequest request,@PathVariable(name = "boardId") Long boardId,
+                                            @RequestBody CommentDto commentDto) {
+        String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
+        artistBoardCommentService.writeComment(jwtTokenProvider.getUserPk(token), boardId, commentDto.getContent());
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    //댓글 수정
+    @PutMapping("/{artistId}/board/{boardId}/update")
+    public ResponseEntity updateBoardComment(@RequestBody CommentDto commentDto){
+        return artistBoardCommentService.updateComment(commentDto);
+    }
+
+    //댓글 삭제
+    @DeleteMapping("/{artistId}/board/{boardId}/delete")
+    public ResponseEntity deleteBoardComment(@RequestBody CommentDto commentDto) {
+        return artistBoardCommentService.deleteComment(commentDto.getCommentId());
     }
 }

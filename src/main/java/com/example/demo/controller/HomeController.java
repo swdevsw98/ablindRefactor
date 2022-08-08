@@ -33,7 +33,6 @@ public class HomeController {
     @GetMapping("/user")
     public ResponseEntity user(ServletRequest request) {
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
-        System.out.println(jwtTokenProvider.getUserPk(token));
         return new ResponseEntity("success", HttpStatus.OK);
     }
 }

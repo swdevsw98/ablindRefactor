@@ -24,7 +24,7 @@ public class ShopService {
         for(Item item : items){
             ItemDto itemDto = ItemDto.builder()
                     .author(item.getAuthor())
-                    .url(item.getUrl())
+                    .images(item.getImages())
                     .itemId(item.getId())
                     .name(item.getName())
                     .price(item.getPrice())
@@ -34,6 +34,23 @@ public class ShopService {
         }
 
         return itemDtoList;
+    }
+
+    //디테일 페이지
+    public ItemDto detailList(Long itemId) {
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(() -> new IllegalStateException("없는 상품"));
+        ItemDto itemDto = ItemDto.builder()
+                .author(item.getAuthor())
+                .images(item.getImages())
+                .itemId(item.getId())
+                .name(item.getName())
+                .price(item.getPrice())
+                .detailImg(item.getDetailImg())
+                .options(item.getOptions())
+                .build();
+
+        return itemDto;
     }
 
     //제목 검색 필터

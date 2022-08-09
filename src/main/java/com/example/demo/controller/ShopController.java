@@ -45,6 +45,11 @@ public class ShopController {
         return list;
     }
 
+    @GetMapping("/detail/{itemId}")
+    public ItemDto listItemDetail(@PathVariable(name = "itemId")Long itemId) {
+        return shopService.detailList(itemId);
+    }
+
     //shop banner
     @GetMapping("/banner")
     public List<ShopBanner> listBanner() {

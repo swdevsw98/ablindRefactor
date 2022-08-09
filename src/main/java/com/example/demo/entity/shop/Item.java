@@ -21,11 +21,17 @@ public class Item {
 
     private String author;
 
-    private String url;
-
     private Long price;
 
     private String category;
+
+    private String detailImg;
+
+    @OneToMany(mappedBy = "item")
+    private List<ItemOption> options = new ArrayList<>();
+
+    @OneToMany(mappedBy = "item")
+    private List<ItemImages> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "itemId")
     private List<OrderItem> orderItems = new ArrayList<>();

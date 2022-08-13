@@ -10,6 +10,7 @@ import com.example.demo.entity.artist.Artist;
 import com.example.demo.repository.artist.ArtistBoardRepository;
 import com.example.demo.repository.artist.ArtistRepository;
 import com.example.demo.repository.artist.ArtistWorkRepository;
+import com.example.demo.service.MemberService;
 import com.example.demo.service.artist.ArtistBoardCommentService;
 import com.example.demo.service.artist.ArtistBoardService;
 import com.example.demo.service.artist.FollowService;
@@ -37,6 +38,7 @@ public class ArtistController {
     private final FollowService followService;
     private final ArtistWorkRepository artistWorkRepository;
     private final ArtistBoardCommentService artistBoardCommentService;
+    private final MemberService memberService;
 
     //artist 작가 리스트 출력
     @GetMapping("")
@@ -68,6 +70,13 @@ public class ArtistController {
             }
 
         return artistDetailDto;
+    }
+
+    //작가확인
+    @GetMapping("/{artistId}/check")
+    public ResponseEntity checkArtist(@PathVariable(name = "artistId") Long artistId, ServletRequest request){
+        String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
+        return memberService.checkArtist(artistId, jwtTokenProvider.getUserPk(token));
     }
 
 

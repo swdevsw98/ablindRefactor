@@ -1,8 +1,11 @@
 package com.example.demo.service;
 
+import com.example.demo.config.JwtTokenProvider;
 import com.example.demo.entity.Member;
 import com.example.demo.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -33,6 +36,18 @@ public class MemberService implements UserDetailsService {
                 .password(member.getPass())
                 .roles(member.getRole().toString())
                 .build();
+    }
+
+    //아티스트인지 체크//
+    public ResponseEntity checkArtist(Long artistId, String email){
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalStateException("그런 유저 없음"));
+
+        if(member.getArtistRoleId() == artistId){
+            return new ResponseEntity(HttpStatus.OK);
+        }
+
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
 

@@ -43,6 +43,8 @@ public class Member {
 
     private Long cartId;
 
+    private Long artistRoleId;
+
     @OneToMany(mappedBy = "memberId")
     private List<Order> orders = new ArrayList<>();
 

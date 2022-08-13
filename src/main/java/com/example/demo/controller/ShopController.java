@@ -20,7 +20,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -106,17 +108,20 @@ public class ShopController {
 
     //review 게시판 생성
     @PostMapping("/{itemId}/review")
-    public ResponseEntity writeReview(@PathVariable(name = "itemId") Long item_id, @RequestBody ItemReviewDto itemReviewDto) {
+    public ResponseEntity writeReview(@PathVariable(name = "itemId") Long item_id,
+                                      @RequestPart(value = "file", required = false)MultipartFile multipartFile,
+                                      @RequestPart(value = "ItemReviewDto") ItemReviewDto itemReviewDto) throws IOException {
         Item item = itemRepository.findById(item_id)
                 .orElseThrow(() -> new IllegalStateException("없는 상품 리뷰 등록"));
-        itemReviewService.writeReview(item, itemReviewDto);
+        itemReviewService.writeReview(item, itemReviewDto, multipartFile);
         return new ResponseEntity<>("게시글 등록 완료", HttpStatus.OK);
     }
 
     //review 게시판 수정
     @PutMapping("/{itemId}/review/update")
-    public ResponseEntity updateReview(@RequestBody ItemReviewDto itemReviewDto){
-        itemReviewService.updateReview(itemReviewDto);
+    public ResponseEntity updateReview(@RequestPart(value = "file", required = false) MultipartFile multipartFile,
+                                       @RequestPart(value = "ItemReviewDto") ItemReviewDto itemReviewDto) throws IOException{
+        itemReviewService.updateReview(itemReviewDto, multipartFile);
         return new ResponseEntity("게시글 수정 완료", HttpStatus.OK);
     }
 
@@ -134,23 +139,24 @@ public class ShopController {
         return list;
     }
 
-    //review 게시판 생성
+    //qna 게시판 생성
     @PostMapping("/{itemId}/qna")
-    public ResponseEntity writeQna(@PathVariable(name = "itemId") Long item_id, @RequestBody ItemQnaDto itemQnaDto) {
+    public ResponseEntity writeQna(@PathVariable(name = "itemId") Long item_id,
+                                   @RequestBody ItemQnaDto itemQnaDto) {
         Item item = itemRepository.findById(item_id)
                 .orElseThrow(() -> new IllegalStateException("없는 상품 리뷰 등록"));
         itemQnaService.writeQna(item, itemQnaDto);
         return new ResponseEntity<>("게시글 등록 완료", HttpStatus.OK);
     }
 
-    //review 게시판 수정
+    //qna 게시판 수정
     @PutMapping("/{itemId}/qna/update")
     public ResponseEntity updateQna(@RequestBody ItemQnaDto itemQnaDto){
         itemQnaService.updateQna(itemQnaDto);
         return new ResponseEntity("게시글 수정 완료", HttpStatus.OK);
     }
 
-    //review게시판 삭제
+    //qna게시판 삭제
     @DeleteMapping("/{itemId}/qna/delete")
     public ResponseEntity deleteQna(@RequestBody ItemQnaDto itemQnaDto){
         itemQnaService.deleteQna(itemQnaDto);

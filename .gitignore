@@ -38,3 +38,4 @@ out/
 
 ### file ###
 application.properties
+aws.yml

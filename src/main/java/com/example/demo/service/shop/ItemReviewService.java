@@ -1,8 +1,10 @@
 package com.example.demo.service.shop;
 
 import com.example.demo.dto.shop.ItemReviewDto;
+import com.example.demo.entity.Member;
 import com.example.demo.entity.shop.Item;
 import com.example.demo.entity.shop.ItemReviewBoard;
+import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.shop.ItemRepository;
 import com.example.demo.repository.shop.ItemReviewRepository;
 import com.example.demo.service.S3Uploader;
@@ -23,20 +25,42 @@ public class ItemReviewService {
     private final ItemReviewRepository itemReviewRepository;
     private final S3Uploader s3Uploader;
     private final ItemRepository itemRepository;
+    private final MemberRepository memberRepository;
 
-    public List<ItemReviewDto> getReviewBoardList(Item item_id) {
+    public List<ItemReviewDto> getReviewBoardList(Item item_id, String email) {
         List<ItemReviewBoard> boards = itemReviewRepository.findByItemReviewId(item_id)
                 .orElseThrow(() -> new IllegalStateException("리뷰 글 없음"));
         List<ItemReviewDto> itemReviewDtoList = new ArrayList<>();
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalStateException("그런 유저 없음"));
 
         for (ItemReviewBoard board : boards){
-            ItemReviewDto reviewDto = ItemReviewDto.builder()
-                    .reviewBoardId(board.getId())
-                    .title(board.getTitle())
-                    .content(board.getContent())
-                    .rate(board.getRate())
-                    .image(board.getImage())
-                    .build();
+            ItemReviewDto reviewDto = new ItemReviewDto();
+            if(member.getId() == board.getMember().getId()){
+                reviewDto = ItemReviewDto.builder()
+                        .reviewBoardId(board.getId())
+                        .title(board.getTitle())
+                        .content(board.getContent())
+                        .rate(board.getRate())
+                        .image(board.getImage())
+                        .myReview(true)
+                        .username(board.getMember().getName())
+                        .createdAt(board.getCreatedAt())
+                        .updatedAt(board.getUpdatedAt())
+                        .build();
+            } else{
+                reviewDto = ItemReviewDto.builder()
+                        .reviewBoardId(board.getId())
+                        .title(board.getTitle())
+                        .content(board.getContent())
+                        .rate(board.getRate())
+                        .image(board.getImage())
+                        .myReview(false)
+                        .username(board.getMember().getName())
+                        .createdAt(board.getCreatedAt())
+                        .updatedAt(board.getUpdatedAt())
+                        .build();
+            }
 
             itemReviewDtoList.add(reviewDto);
         }
@@ -44,9 +68,12 @@ public class ItemReviewService {
         return itemReviewDtoList;
     }
 
-    public void writeReview(Item item , ItemReviewDto itemReviewDto, MultipartFile multipartFile) throws IOException {
+    public void writeReview(Item item , ItemReviewDto itemReviewDto, MultipartFile multipartFile,
+                            String email) throws IOException {
         //[0] -> S3에 저장된 파일이름 [1] -> 이미지 경로
         String[] values = s3Uploader.upload(multipartFile, "review");
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalStateException("그런 유저 없음"));
 
         ItemReviewBoard itemReviewBoard = ItemReviewBoard.builder()
                 .item(item)
@@ -56,6 +83,7 @@ public class ItemReviewService {
 //                .image(s3Uploader.upload(multipartFile, "review"))
                 .deleteImage(values[0])
                 .image(values[1])
+                .member(member)
                 .build();
 
         item.getItemReviewBoards().add(itemReviewBoard);

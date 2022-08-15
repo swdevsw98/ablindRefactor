@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.config.JwtTokenProvider;
 import com.example.demo.dto.shop.ItemDto;
 import com.example.demo.dto.shop.ItemQnaDto;
 import com.example.demo.dto.shop.ItemReviewDto;
@@ -22,6 +23,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +34,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ShopController {
 
+    private final JwtTokenProvider jwtTokenProvider;
     private final ShopService shopService;
     private final MemberRepository memberRepository;
     private final OrderService orderService;
@@ -101,8 +105,10 @@ public class ShopController {
 
     //review 게시판 불러오기
     @GetMapping("/{itemId}/review")
-    public List<ItemReviewDto> listReviewBoard(@PathVariable(name = "itemId") Item item_id) {
-        List<ItemReviewDto> list = itemReviewService.getReviewBoardList(item_id);
+    public List<ItemReviewDto> listReviewBoard(@PathVariable(name = "itemId") Item item_id,
+                                               ServletRequest request) {
+        String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
+        List<ItemReviewDto> list = itemReviewService.getReviewBoardList(item_id, jwtTokenProvider.getUserPk(token));
         return list;
     }
 
@@ -110,10 +116,12 @@ public class ShopController {
     @PostMapping("/{itemId}/review")
     public ResponseEntity writeReview(@PathVariable(name = "itemId") Long item_id,
                                       @RequestPart(value = "file", required = false)MultipartFile multipartFile,
-                                      @RequestPart(value = "ItemReviewDto") ItemReviewDto itemReviewDto) throws IOException {
+                                      @RequestPart(value = "ItemReviewDto") ItemReviewDto itemReviewDto,
+                                      ServletRequest request) throws IOException {
+        String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
         Item item = itemRepository.findById(item_id)
                 .orElseThrow(() -> new IllegalStateException("없는 상품 리뷰 등록"));
-        itemReviewService.writeReview(item, itemReviewDto, multipartFile);
+        itemReviewService.writeReview(item, itemReviewDto, multipartFile, jwtTokenProvider.getUserPk(token));
         return new ResponseEntity<>("게시글 등록 완료", HttpStatus.OK);
     }
 
@@ -134,18 +142,22 @@ public class ShopController {
 
     //qna 게시판 불러오기
     @GetMapping("/{itemId}/qna")
-    public List<ItemQnaDto> listQnaBoard(@PathVariable(name = "itemId") Item item_id) {
-        List<ItemQnaDto> list = itemQnaService.getQnaBoardList(item_id);
+    public List<ItemQnaDto> listQnaBoard(@PathVariable(name = "itemId") Item item_id,
+                                         ServletRequest request) {
+        String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
+        List<ItemQnaDto> list = itemQnaService.getQnaBoardList(item_id, jwtTokenProvider.getUserPk(token));
         return list;
     }
 
     //qna 게시판 생성
     @PostMapping("/{itemId}/qna")
     public ResponseEntity writeQna(@PathVariable(name = "itemId") Long item_id,
-                                   @RequestBody ItemQnaDto itemQnaDto) {
+                                   @RequestBody ItemQnaDto itemQnaDto,
+                                   ServletRequest request) {
+        String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
         Item item = itemRepository.findById(item_id)
                 .orElseThrow(() -> new IllegalStateException("없는 상품 리뷰 등록"));
-        itemQnaService.writeQna(item, itemQnaDto);
+        itemQnaService.writeQna(item, itemQnaDto, jwtTokenProvider.getUserPk(token));
         return new ResponseEntity<>("게시글 등록 완료", HttpStatus.OK);
     }
 

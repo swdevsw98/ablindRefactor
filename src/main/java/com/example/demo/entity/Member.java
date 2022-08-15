@@ -2,6 +2,8 @@ package com.example.demo.entity;
 
 import com.example.demo.dto.MemberFormDto;
 import com.example.demo.entity.artist.Follow;
+import com.example.demo.entity.shop.ItemQnaBoard;
+import com.example.demo.entity.shop.ItemReviewBoard;
 import com.example.demo.entity.shop.Order;
 import lombok.Data;
 
@@ -44,6 +46,12 @@ public class Member {
     private Long cartId;
 
     private Long artistRoleId;
+
+    @OneToOne
+    private ItemQnaBoard itemQnaBoard;
+
+    @OneToOne
+    private ItemReviewBoard itemReviewBoard;
 
     @OneToMany(mappedBy = "memberId")
     private List<Order> orders = new ArrayList<>();

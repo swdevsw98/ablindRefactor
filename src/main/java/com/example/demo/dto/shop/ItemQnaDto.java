@@ -21,10 +21,12 @@ public class ItemQnaDto {
     private String createdAt;
     private String updatedAt;
 
+    private String answer;
+
     @Builder
     public ItemQnaDto (Long qnaBoardId, String title, String content,
                        boolean secretTNF, boolean myReview, String username,
-                       String createdAt, String updatedAt){
+                       String createdAt, String updatedAt, String answer){
         this.qnaBoardId = qnaBoardId;
         this.title = title;
         this.content = content;
@@ -33,6 +35,7 @@ public class ItemQnaDto {
         this.username = username;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.answer = answer;
     }
 
 }

@@ -29,8 +29,14 @@ public class S3Uploader {
     public String bucket;
 
     public String[] upload(MultipartFile multipartFile, String dirName) throws IOException {
-        File uploadFile = convert(multipartFile)  // 파일 변환할 수 없으면 에러
-                .orElseThrow(() -> new IllegalArgumentException("error: MultipartFile -> File convert fail"));
+        File uploadFile = convert(multipartFile) // 파일 변환할 수 없으면 에러
+                .orElseGet(() -> new File(""));
+//                .orElseThrow(() -> new IllegalArgumentException("error: MultipartFile -> File convert fail"));
+
+        if(uploadFile.getPath().equals("")){
+            String[] url = new String[2];
+            return url;
+        }
 
         return upload(uploadFile, dirName);
     }

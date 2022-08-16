@@ -30,10 +30,12 @@ public class ArtistDetailDto {
 
     private String content;
 
+    private String email;
+
     private List<ArtWorks> works = new ArrayList<>();
 
-    @Builder
-    public  ArtistDetailDto(Artist artist){
+
+    public ArtistDetailDto(Artist artist){
         this.artistId = artist.getId();
         this.profile = artist.getProfile();
         this.backGround = artist.getBackGround();
@@ -43,6 +45,18 @@ public class ArtistDetailDto {
         this.detail = artist.getDetail();
         this.youtube = artist.getYoutube();
         this.content = artist.getContent();
+    }
+
+    @Builder
+    public ArtistDetailDto(Long artistId, String profile, String name,
+                            String intro, String subTitle, String content, String email){
+        this.artistId = artistId;
+        this.profile = profile;
+        this.name = name;
+        this.intro = intro;
+        this.subTitle = subTitle;
+        this.content = content;
+        this.email = email;
     }
 
     public void add(ArtWorks work){

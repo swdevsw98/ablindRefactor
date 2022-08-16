@@ -42,6 +42,7 @@ public class ItemQnaService {
                         .username(board.getMember().getName())
                         .createdAt(board.getCreatedAt())
                         .updatedAt(board.getUpdatedAt())
+                        .answer(board.getAnswer())
                         .build();
             } else {
                 reviewDto = ItemQnaDto.builder()
@@ -53,6 +54,7 @@ public class ItemQnaService {
                         .username(board.getMember().getName())
                         .createdAt(board.getCreatedAt())
                         .updatedAt(board.getUpdatedAt())
+                        .answer(board.getAnswer())
                         .build();
 
             }

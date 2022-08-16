@@ -47,6 +47,8 @@ public class Member {
 
     private Long artistRoleId;
 
+    private String image;
+
     @OneToOne
     private ItemQnaBoard itemQnaBoard;
 

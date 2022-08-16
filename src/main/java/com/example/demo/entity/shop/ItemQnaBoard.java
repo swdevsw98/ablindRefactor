@@ -28,6 +28,8 @@ public class ItemQnaBoard extends BaseEntity {
 
     private boolean secretTNF;
 
+    private String answer;
+
     @OneToOne
     private Member member;
 

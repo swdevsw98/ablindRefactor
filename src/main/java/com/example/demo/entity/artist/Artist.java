@@ -34,6 +34,7 @@ public class Artist {
 
     private String content;
 
+    private String email;
 
     @JsonIgnore
     @OneToMany(mappedBy = "artistWorkId", cascade = CascadeType.ALL, orphanRemoval = true)

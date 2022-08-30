@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import com.example.demo.dto.MemberFormDto;
 import com.example.demo.entity.artist.Follow;
+import com.example.demo.entity.cart.Cart;
 import com.example.demo.entity.shop.ItemQnaBoard;
 import com.example.demo.entity.shop.ItemReviewBoard;
 import com.example.demo.entity.shop.Order;
@@ -43,11 +44,12 @@ public class Member {
 
     private String account;
 
-    private Long cartId;
-
     private Long artistRoleId;
 
     private String image;
+
+    @OneToOne
+    private Cart cartId;
 
     @OneToOne
     private ItemQnaBoard itemQnaBoard;

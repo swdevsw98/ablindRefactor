@@ -25,4 +25,6 @@ public class CartItem {
     private Long itemId;
 
     private Long count;
+
+    private String optionName;
 }

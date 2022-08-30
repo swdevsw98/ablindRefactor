@@ -43,14 +43,17 @@ public class MyPageController {
 
     //장바구니 가져오기
     @GetMapping("/cart")
-    public List<CartItem> getCartItemList(@RequestBody CartDto cartDto){
-        return cartService.getCartItemList(cartDto);
+    public List<CartDto> getCartItemList(ServletRequest request){
+        String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
+        return cartService.getCartItemList(jwtTokenProvider.getUserPk(token));
     }
 
     //장바구니 담기
     @PostMapping("/cart/add")
-    public ResponseEntity addCart(@RequestBody CartDto cartDto){
-        cartService.addCart(cartDto);
+    public ResponseEntity addCart(ServletRequest request,
+                                  @RequestBody CartDto cartDto){
+        String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
+        cartService.addCart(jwtTokenProvider.getUserPk(token),cartDto);
 
         return new ResponseEntity("장바구니에 추가 됐습니다~", HttpStatus.OK);
     }
@@ -58,6 +61,7 @@ public class MyPageController {
     //장바구니 수정
     @PutMapping("/cart/update")
     public ResponseEntity updateCart(@RequestBody CartDto cartDto){
+
         cartService.updateCart(cartDto);
 
         return new ResponseEntity("장바구니 갯수 수정~~", HttpStatus.OK);

@@ -61,6 +61,7 @@ public class MypageService {
                     .subTitle(artist.getFollowArtistId().getSubTitle())
                     .content(artist.getFollowArtistId().getContent())
                     .email(artist.getFollowArtistId().getEmail())
+                    .price(artist.getPrice())
                     .build();
 
             detailDtos.add(detailDto);

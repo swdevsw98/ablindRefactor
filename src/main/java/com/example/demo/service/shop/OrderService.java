@@ -1,17 +1,22 @@
 package com.example.demo.service.shop;
 
-import com.example.demo.dto.shop.OrderDto;
+import com.example.demo.dto.MemberDataDto;
+import com.example.demo.dto.order.OrderFinalDto;
+import com.example.demo.dto.order.OrderItemDto;
+import com.example.demo.dto.order.OrdererDto;
+import com.example.demo.dto.order.RecipientDto;
 import com.example.demo.entity.Member;
-import com.example.demo.entity.cart.Delivery;
-import com.example.demo.entity.cart.DeliveryStatus;
+import com.example.demo.entity.cart.CartItem;
 import com.example.demo.entity.shop.Item;
 import com.example.demo.entity.shop.Order;
 import com.example.demo.entity.shop.OrderItem;
+import com.example.demo.repository.MemberRepository;
+import com.example.demo.repository.cart.CartItemRepository;
 import com.example.demo.repository.cart.DeliveryRepository;
+import com.example.demo.repository.shop.ItemRepository;
 import com.example.demo.repository.shop.OrderItemRepository;
 import com.example.demo.repository.shop.OrderRepository;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -25,31 +30,53 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final DeliveryRepository deliveryRepository;
+    private final MemberRepository memberRepository;
+    private final CartItemRepository cartItemRepository;
+    private final ItemRepository itemRepository;
+
+    //주문자 정보 받아오기
+    public MemberDataDto getMemberInfo(String email){
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalStateException("그런 유저 없음"));
+        MemberDataDto memberDataDto = MemberDataDto.builder()
+                .name(member.getName())
+                .address(member.getAddress())
+                .phoneNumber(member.getPhoneNumber())
+                .account(member.getAccount())
+                .account_name(member.getAccount_name())
+                .build();
+
+        return memberDataDto;
+    }
+
 
     //save
-    public OrderDto save(Member member, Item item, Long count){
-        Order order = Order.builder()
-                .member(member)
-                .orderStatus("주문완료")
-                .build();
+    public ResponseEntity save(String email, OrderFinalDto orderFinalDto){
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalStateException("그런 유저 없음"));
+        Order order = new Order(orderFinalDto.getOrdererDto(), orderFinalDto.getRecipientDto());
+        order.orderAdd(member, "주문완료", orderFinalDto.getPrice());
 
-        OrderItem orderItem = OrderItem.builder()
-                .order(order)
-                .item(item)
-                .count(count)
-                .build();
 
+        for(OrderItemDto orderItemDto : orderFinalDto.getOrderItemDtoList()){
+            CartItem cartItem = cartItemRepository.findById(orderItemDto.getId())
+                    .orElseThrow(() -> new IllegalStateException("없는 장바구니"));
+            Item item = itemRepository.findById(cartItem.getItemId())
+                    .orElseThrow(() -> new IllegalStateException("없는 상품"));
+
+            OrderItem orderItem = OrderItem.builder()
+                    .order(order)
+                    .item(item)
+                    .count(cartItem.getCount())
+                    .build();
+
+            order.getOrderItems().add(orderItem);
+            orderItemRepository.save(orderItem);
+        }
 
         orderRepository.save(order);
-        orderItemRepository.save(orderItem);
 
-        OrderDto orderDto = OrderDto.builder()
-                .id(order.getId())
-                .item(item.getName())
-                .count(count)
-                .build();
-
-        return orderDto;
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     public ResponseEntity updateOrder(Item item, Long count, Long id) {

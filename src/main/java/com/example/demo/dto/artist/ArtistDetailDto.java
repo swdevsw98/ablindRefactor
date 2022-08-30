@@ -32,6 +32,8 @@ public class ArtistDetailDto {
 
     private String email;
 
+    private Long price;
+
     private List<ArtWorks> works = new ArrayList<>();
 
 
@@ -49,7 +51,7 @@ public class ArtistDetailDto {
 
     @Builder
     public ArtistDetailDto(Long artistId, String profile, String name,
-                            String intro, String subTitle, String content, String email){
+                            String intro, String subTitle, String content, String email, Long price){
         this.artistId = artistId;
         this.profile = profile;
         this.name = name;
@@ -57,6 +59,7 @@ public class ArtistDetailDto {
         this.subTitle = subTitle;
         this.content = content;
         this.email = email;
+        this.price = price;
     }
 
     public void add(ArtWorks work){

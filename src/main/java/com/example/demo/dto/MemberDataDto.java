@@ -25,6 +25,7 @@ public class MemberDataDto {
 
     private String role;
 
+
     public MemberDataDto(Member member){
         this.name = member.getName();
         this.email = member.getEmail();

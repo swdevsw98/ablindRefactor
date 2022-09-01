@@ -2,8 +2,11 @@ package com.example.demo.controller;
 
 import com.example.demo.config.JwtTokenProvider;
 import com.example.demo.dto.MemberDataDto;
+import com.example.demo.dto.MemberFormDto;
 import com.example.demo.dto.artist.ArtistDetailDto;
 import com.example.demo.dto.cart.CartDto;
+import com.example.demo.dto.order.OrderDetailDto;
+import com.example.demo.dto.order.OrderListDto;
 import com.example.demo.entity.cart.CartItem;
 import com.example.demo.service.cart.CartService;
 import com.example.demo.service.mypage.MypageService;
@@ -12,9 +15,11 @@ import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -74,4 +79,34 @@ public class MyPageController {
         return new ResponseEntity("아이템 삭제~", HttpStatus.OK);
     }
 
+    //주문내역 조회
+    @GetMapping("/order")
+    public List<OrderListDto> getOrderList(ServletRequest request){
+        return mypageService.getOrderList(getEmail(request));
+    }
+
+    //주문상세 조회
+    @GetMapping("order/detail")
+    public OrderDetailDto getOrderDetail(@RequestBody Map<String, Long> id) {
+        return mypageService.getOrderDetail(id.get("id"));
+    }
+
+    //유저 프로필 업데이트
+    @PutMapping("profile/update")
+    public ResponseEntity updateProfile(ServletRequest request,
+                                        @RequestPart(value = "file", required = false)MultipartFile multipartFile) throws IOException{
+        return mypageService.updateProfile(getEmail(request), multipartFile);
+    }
+
+    //유저 정보 수정
+    @PutMapping("info/update")
+    public ResponseEntity updateMemberInfo(ServletRequest request,
+                                           @RequestBody MemberFormDto memberFormDto){
+        return mypageService.updateMemberInfo(getEmail(request), memberFormDto);
+    }
+
+    private String getEmail(ServletRequest request){
+        String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
+        return jwtTokenProvider.getUserPk(token);
+    }
 }

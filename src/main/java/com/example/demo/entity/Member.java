@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.example.demo.config.SecurityConfig;
 import com.example.demo.dto.MemberFormDto;
 import com.example.demo.entity.artist.Follow;
 import com.example.demo.entity.cart.Cart;
@@ -8,6 +9,7 @@ import com.example.demo.entity.shop.ItemReviewBoard;
 import com.example.demo.entity.shop.Order;
 import lombok.Data;
 
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -21,6 +23,7 @@ import java.util.List;
 @Table(name = "member")
 @Entity
 public class Member {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,6 +50,7 @@ public class Member {
     private Long artistRoleId;
 
     private String image;
+    private String deleteImage;
 
     @OneToOne
     private Cart cartId;
@@ -77,6 +81,21 @@ public class Member {
         return member;
     }
 
+    public void updateProfile(String image, String deleteImage){
+        this.image = image;
+        this.deleteImage = deleteImage;
+    }
 
+    public void updateMemberInfo(MemberFormDto memberFormDto){
+        this.name = memberFormDto.getName();
+        this.address = memberFormDto.getAddress();
+        this.phoneNumber = memberFormDto.getPhoneNumber();
+        this.account = memberFormDto.getAccount();
+        this.account_name = memberFormDto.getAccount_name();
+    }
+
+    public void updatePassword(String pass, PasswordEncoder passwordEncoder){
+        this.pass = passwordEncoder.encode(pass);
+    }
 
 }

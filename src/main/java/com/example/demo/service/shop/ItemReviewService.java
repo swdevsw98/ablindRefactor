@@ -80,7 +80,6 @@ public class ItemReviewService {
                 .title(itemReviewDto.getTitle())
                 .content(itemReviewDto.getContent())
                 .rate(itemReviewDto.getRate())
-//                .image(s3Uploader.upload(multipartFile, "review"))
                 .deleteImage(values[0])
                 .image(values[1])
                 .member(member)
@@ -96,6 +95,9 @@ public class ItemReviewService {
         String[] values = s3Uploader.upload(multipartFile, "review");
         ItemReviewBoard itemReviewBoard = itemReviewRepository.findById(itemReviewDto.getReviewBoardId())
                 .orElseThrow(() -> new IllegalStateException("그런 리뷰 없어요"));
+        if(itemReviewBoard.getDeleteImage() != null) {
+            s3Uploader.deleteFile(itemReviewBoard.getDeleteImage());
+        }
         BigDecimal preRate = itemReviewBoard.getRate();
 
         itemReviewBoard.setTitle(itemReviewDto.getTitle());

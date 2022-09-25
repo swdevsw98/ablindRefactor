@@ -20,4 +20,10 @@ public class ItemOption {
     private Item item;
 
     private String itemOption;
+
+    //==생성메소드==/
+    public void setItem(Item item){
+        this.item = item;
+        item.getOptions().add(this);
+    }
 }

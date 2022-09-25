@@ -44,6 +44,14 @@ public class Item {
     @OneToMany(mappedBy = "itemReviewId")
     private List<ItemReviewBoard> itemReviewBoards = new ArrayList<>();
 
+    public Item(String name, String author, Long price,
+                String category) {
+        this.name = name;
+        this.author = author;
+        this.price = price;
+        this.category = category;
+        this.rate = new BigDecimal("0");
+    }
 
     //==계산 메소드==//
     public void avgAddRate(BigDecimal rate){

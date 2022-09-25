@@ -22,6 +22,8 @@ public class ItemDto {
 
     private String detailImg;
 
+    private String category;
+
     private List<ItemOption> options;
 
     private List<ItemImages> images;

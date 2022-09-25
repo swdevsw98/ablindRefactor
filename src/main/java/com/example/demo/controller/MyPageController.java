@@ -87,8 +87,8 @@ public class MyPageController {
 
     //주문상세 조회
     @GetMapping("order/detail")
-    public OrderDetailDto getOrderDetail(@RequestBody Map<String, Long> id) {
-        return mypageService.getOrderDetail(id.get("id"));
+    public OrderDetailDto getOrderDetail(@RequestParam(value="id") Long id) {
+        return mypageService.getOrderDetail(id);
     }
 
     //유저 프로필 업데이트

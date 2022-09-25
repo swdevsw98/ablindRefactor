@@ -100,8 +100,11 @@ public class MypageService {
                     .price(order.getPrice())
                     .createdAt(order.getCreatedAt())
                     .id(order.getId())
-                    .name(order.getOrderItems().get(0).getItemId().getName())
                     .build();
+
+            for(OrderItem orderItem : order.getOrderItems()){
+                orderListDto.getOrderItems().add(orderItem);
+            }
 
             orderListDtos.add(orderListDto);
         }

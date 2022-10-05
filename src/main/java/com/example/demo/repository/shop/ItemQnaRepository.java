@@ -13,4 +13,6 @@ public interface ItemQnaRepository extends JpaRepository<ItemQnaBoard, Long> {
     Optional<List<ItemQnaBoard>> findByItemQnaId(Item item_id);
 
     Optional<ItemQnaBoard> findByItemQnaId(Long item_id);
+
+    Optional<List<ItemQnaBoard>> findByAnswerIsNull();
 }

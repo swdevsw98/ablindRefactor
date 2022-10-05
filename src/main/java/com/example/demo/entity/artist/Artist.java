@@ -1,5 +1,6 @@
 package com.example.demo.entity.artist;
 
+import com.example.demo.dto.artist.ArtistDetailDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,6 +37,10 @@ public class Artist {
 
     private String email;
 
+    private String deleteProfile;
+    private String deleteBackGround;
+    private String deleteDetail;
+
     @JsonIgnore
     @OneToMany(mappedBy = "artistWorkId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ArtWorks> works = new ArrayList<>();
@@ -50,5 +55,14 @@ public class Artist {
         this.name = name;
         this.profile = profile;
         this.intro = intro;
+    }
+
+    public void addArtist(ArtistDetailDto artistDetailDto){
+        this.name = artistDetailDto.getName();
+        this.intro = artistDetailDto.getIntro();
+        this.content = artistDetailDto.getContent();
+        this.subTitle = artistDetailDto.getSubTitle();
+        this.youtube = artistDetailDto.getYoutube();
+        this.email = artistDetailDto.getEmail();
     }
 }

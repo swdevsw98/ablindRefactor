@@ -1,5 +1,6 @@
 package com.example.demo.entity.artist;
 
+import com.example.demo.entity.BaseEntity;
 import com.example.demo.entity.Member;
 import com.example.demo.entity.artist.Artist;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @Data
 @Table(name = "follow")
 @Entity
-public class Follow {
+public class Follow extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +31,9 @@ public class Follow {
     private Member followUserId;
 
     private Long price;
+
+    //승인 여부
+    private boolean approve;
 
     public Follow (Artist artist, Member member, Long price){
         this.followArtistId = artist;

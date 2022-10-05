@@ -5,12 +5,14 @@ import com.example.demo.dto.admin.MainBannerDto;
 import com.example.demo.dto.artist.ArtWorkDto;
 import com.example.demo.dto.artist.ArtistDetailDto;
 import com.example.demo.dto.artist.ArtistInfoDto;
+import com.example.demo.dto.artist.FollowDto;
 import com.example.demo.dto.order.OrderDetailDto;
 import com.example.demo.dto.order.OrderFilterDto;
 import com.example.demo.dto.shop.ItemDto;
 import com.example.demo.dto.shop.ItemQnaAnswerDto;
 import com.example.demo.dto.shop.ItemQnaDto;
 import com.example.demo.entity.MainBanner;
+import com.example.demo.service.admin.AdminArtistFollowService;
 import com.example.demo.service.admin.AdminArtistService;
 import com.example.demo.service.admin.AdminService;
 import com.example.demo.service.admin.AdminShopService;
@@ -32,6 +34,7 @@ public class AdminController {
     private final AdminService adminService;
     private final AdminShopService adminShopService;
     private final AdminArtistService adminArtistService;
+    private final AdminArtistFollowService adminArtistFollowService;
 
     @PostMapping("/add/mainbanner")
     public ResponseEntity addMainBanner(@RequestPart(value="file", required = false)MultipartFile multipartFile,
@@ -116,6 +119,24 @@ public class AdminController {
     public ResponseEntity deleteWork(ServletRequest request,
                                      @RequestBody ArtWorkDto artWorkDto){
         return adminArtistService.deleteArtWork(getEmail(request), artWorkDto);
+    }
+
+    @GetMapping("/artist/follow/list")
+    public List<FollowDto> listFollow(ServletRequest request) {
+        return adminArtistFollowService.listFollow(getEmail(request));
+    }
+
+    @PostMapping("/artist/follow/approve")
+    public ResponseEntity approveFollow(ServletRequest request,
+                                        @RequestBody FollowDto followDto) {
+        System.out.println(followDto);
+        return adminArtistFollowService.approveFollow(getEmail(request),followDto);
+    }
+
+    @DeleteMapping("/artist/follow/delete")
+    public ResponseEntity deleteFollow(ServletRequest request,
+                                       @RequestBody FollowDto followDto) {
+        return adminArtistFollowService.rejectFollow(getEmail(request), followDto);
     }
 
     private String getEmail(ServletRequest request){

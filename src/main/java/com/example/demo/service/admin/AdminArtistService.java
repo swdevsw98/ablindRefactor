@@ -1,10 +1,14 @@
 package com.example.demo.service.admin;
 
+import com.example.demo.dto.artist.ArtWorkDto;
 import com.example.demo.dto.artist.ArtistDetailDto;
+import com.example.demo.dto.artist.ArtistInfoDto;
 import com.example.demo.entity.Member;
+import com.example.demo.entity.artist.ArtWorks;
 import com.example.demo.entity.artist.Artist;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.artist.ArtistRepository;
+import com.example.demo.repository.artist.ArtistWorkRepository;
 import com.example.demo.service.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,6 +27,7 @@ public class AdminArtistService {
     private final S3Uploader s3Uploader;
     private final MemberRepository memberRepository;
     private final ArtistRepository artistRepository;
+    private final ArtistWorkRepository artistWorkRepository;
 
     public ResponseEntity addArtist(String email, ArtistDetailDto artistDetailDto,
                                     MultipartFile profile, MultipartFile backGround,
@@ -64,6 +69,41 @@ public class AdminArtistService {
         return new ResponseEntity("작가 삭제 성공", HttpStatus.OK);
     }
 
+    /**
+     * 작품 추가
+     */
+    public ResponseEntity addArtistWork(String email, Long artistId , MultipartFile work) throws IOException {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(()->new IllegalStateException("그런 유저 없음"));
+        isAdmin(member.getRole());
+        Artist artist = artistRepository.findById(artistId)
+                .orElseThrow(() -> new IllegalStateException("작가 먼저 생성해주세요"));
+
+        String[] works = s3Uploader.upload(work, "artist/works");
+        ArtWorks artWorks = new ArtWorks();
+        artWorks.setWork(works[1]);
+        artWorks.setDeleteWork(works[0]);
+        artWorks.setArtistWorkId(artist);
+        artist.getWorks().add(artWorks);
+
+        artistRepository.save(artist);
+        return new ResponseEntity("작품 등록 성공" , HttpStatus.OK);
+    }
+
+    /**
+     * 작품 삭제
+     */
+    public ResponseEntity deleteArtWork(String email, ArtWorkDto artWorkDto) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(()->new IllegalStateException("그런 유저 없음"));
+        isAdmin(member.getRole());
+        ArtWorks artWorks = artistWorkRepository.findById(artWorkDto.getId())
+                .orElseThrow(() -> new IllegalStateException("그런 작품 없음"));
+        s3Uploader.deleteFile(artWorks.getDeleteWork());
+        artistWorkRepository.deleteById(artWorkDto.getId());
+
+        return new ResponseEntity("작품 삭제", HttpStatus.OK);
+    }
 
     private void isAdmin(String role) {
         if(role != "ADMIN") {

@@ -23,4 +23,5 @@ public class ArtWorks {
     private Artist artistWorkId;
 
     private String work;
+    private String deleteWork;
 }

@@ -2,7 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.config.JwtTokenProvider;
 import com.example.demo.dto.admin.MainBannerDto;
+import com.example.demo.dto.artist.ArtWorkDto;
 import com.example.demo.dto.artist.ArtistDetailDto;
+import com.example.demo.dto.artist.ArtistInfoDto;
 import com.example.demo.dto.order.OrderDetailDto;
 import com.example.demo.dto.order.OrderFilterDto;
 import com.example.demo.dto.shop.ItemDto;
@@ -101,6 +103,19 @@ public class AdminController {
     public ResponseEntity deleteArtist(ServletRequest request,
                                        @RequestBody ArtistDetailDto artistDetailDto) {
         return adminArtistService.deleteArtist(getEmail(request), artistDetailDto);
+    }
+
+    @PostMapping("/artist/work/add")
+    public ResponseEntity addArtWork(ServletRequest request,
+                                     @RequestPart(value = "work") MultipartFile work,
+                                     @RequestPart(value = "artistDetailDto") ArtistDetailDto artistDetailDto) throws IOException{
+        return adminArtistService.addArtistWork(getEmail(request), artistDetailDto.getArtistId(), work);
+    }
+
+    @DeleteMapping("/artist/work/delete")
+    public ResponseEntity deleteWork(ServletRequest request,
+                                     @RequestBody ArtWorkDto artWorkDto){
+        return adminArtistService.deleteArtWork(getEmail(request), artWorkDto);
     }
 
     private String getEmail(ServletRequest request){

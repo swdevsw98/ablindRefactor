@@ -72,7 +72,7 @@ public class CartService {
                     .itemImage(item.getImages().get(0).getUrl())
                     .itemName(item.getName())
                     .itemOption(cartItem.getOptionName())
-                    .price(item.getPrice() * cartItem.getCount())
+                    .price(item.getPrice())
                     .build();
 
             cartDtos.add(cartDto);

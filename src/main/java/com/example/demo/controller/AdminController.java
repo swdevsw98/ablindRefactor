@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.config.JwtTokenProvider;
+import com.example.demo.dto.MemberDataDto;
 import com.example.demo.dto.admin.MainBannerDto;
 import com.example.demo.dto.artist.ArtWorkDto;
 import com.example.demo.dto.artist.ArtistDetailDto;
@@ -139,6 +140,16 @@ public class AdminController {
         return adminArtistFollowService.rejectFollow(getEmail(request), followDto);
     }
 
+    @GetMapping("/member/list")
+    public List<MemberDataDto> listMember(ServletRequest request){
+        return adminService.listMember(getEmail(request));
+    }
+
+    @DeleteMapping("/member/delete")
+    public ResponseEntity deleteMember(ServletRequest request,
+                                       @RequestBody MemberDataDto memberDataDto) {
+        return adminService.deleteMember(getEmail(request), memberDataDto);
+    }
     private String getEmail(ServletRequest request){
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
         return jwtTokenProvider.getUserPk(token);

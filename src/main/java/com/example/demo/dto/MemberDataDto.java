@@ -24,9 +24,11 @@ public class MemberDataDto {
     private String image;
 
     private String role;
+    private Long id;
 
 
     public MemberDataDto(Member member){
+        this.id = member.getId();
         this.name = member.getName();
         this.email = member.getEmail();
         this.address = member.getAddress();

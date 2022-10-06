@@ -1,5 +1,6 @@
 package com.example.demo.repository.shop;
 
+import com.example.demo.entity.Member;
 import com.example.demo.entity.shop.Item;
 import com.example.demo.entity.shop.ItemQnaBoard;
 import com.example.demo.entity.shop.ItemReviewBoard;
@@ -15,4 +16,6 @@ public interface ItemQnaRepository extends JpaRepository<ItemQnaBoard, Long> {
     Optional<ItemQnaBoard> findByItemQnaId(Long item_id);
 
     Optional<List<ItemQnaBoard>> findByAnswerIsNull();
+
+    Optional<ItemQnaBoard> deleteAllByMember(Member member);
 }

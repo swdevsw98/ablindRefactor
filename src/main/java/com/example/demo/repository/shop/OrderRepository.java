@@ -13,4 +13,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Optional<List<Order>> findByMemberId(Member member);
 
     Optional<List<Order>> findByOrdererNameContaining(String name);
+    Optional<Order> deleteAllByMemberId(Member member);
 }

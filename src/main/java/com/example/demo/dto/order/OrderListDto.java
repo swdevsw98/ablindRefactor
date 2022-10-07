@@ -15,7 +15,7 @@ public class OrderListDto {
     private String createdAt;
     private Long id;
 
-    private List<OrderItem> orderItems = new ArrayList<>();
+    private List<MypageOrderItemDto> orderItems = new ArrayList<>();
 
     @Builder
     private OrderListDto (String orderStatus, String createdAt,

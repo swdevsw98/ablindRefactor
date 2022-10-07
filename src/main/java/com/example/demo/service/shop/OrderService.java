@@ -8,11 +8,13 @@ import com.example.demo.dto.order.RecipientDto;
 import com.example.demo.entity.Member;
 import com.example.demo.entity.cart.CartItem;
 import com.example.demo.entity.shop.Item;
+import com.example.demo.entity.shop.ItemOption;
 import com.example.demo.entity.shop.Order;
 import com.example.demo.entity.shop.OrderItem;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.cart.CartItemRepository;
 import com.example.demo.repository.cart.DeliveryRepository;
+import com.example.demo.repository.shop.ItemOptionRepository;
 import com.example.demo.repository.shop.ItemRepository;
 import com.example.demo.repository.shop.OrderItemRepository;
 import com.example.demo.repository.shop.OrderRepository;
@@ -33,6 +35,7 @@ public class OrderService {
     private final MemberRepository memberRepository;
     private final CartItemRepository cartItemRepository;
     private final ItemRepository itemRepository;
+    private final ItemOptionRepository itemOptionRepository;
 
     //주문자 정보 받아오기
     public MemberDataDto getMemberInfo(String email){
@@ -68,6 +71,7 @@ public class OrderService {
                     .order(order)
                     .item(item)
                     .count(cartItem.getCount())
+                    .option(cartItem.getOptionName())
                     .build();
 
             order.getOrderItems().add(orderItem);

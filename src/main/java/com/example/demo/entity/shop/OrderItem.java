@@ -31,12 +31,15 @@ public class OrderItem {
 
     private Long count;
 
+    private String itemOption;
+
     @Builder
-    public OrderItem(Order order, Item item, Long count)
+    public OrderItem(Order order, Item item, Long count, String option)
     {
         this.orderId = order;
         this.itemId = item;
         this.orderPrice = item.getPrice() * count;
         this.count = count;
+        this.itemOption = option;
     }
 }

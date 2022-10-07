@@ -3,10 +3,10 @@ package com.example.demo.service.mypage;
 import com.example.demo.dto.MemberDataDto;
 import com.example.demo.dto.MemberFormDto;
 import com.example.demo.dto.artist.ArtistDetailDto;
+import com.example.demo.dto.order.MypageOrderItemDto;
 import com.example.demo.dto.order.OrderDetailDto;
 import com.example.demo.dto.order.OrderListDto;
 import com.example.demo.entity.Member;
-import com.example.demo.entity.artist.Artist;
 import com.example.demo.entity.artist.Follow;
 import com.example.demo.entity.shop.Order;
 import com.example.demo.entity.shop.OrderItem;
@@ -103,7 +103,8 @@ public class MypageService {
                     .build();
 
             for(OrderItem orderItem : order.getOrderItems()){
-                orderListDto.getOrderItems().add(orderItem);
+                MypageOrderItemDto mypageOrderItemDto = new MypageOrderItemDto(orderItem);
+                orderListDto.getOrderItems().add(mypageOrderItemDto);
             }
 
             orderListDtos.add(orderListDto);

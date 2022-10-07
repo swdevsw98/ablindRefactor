@@ -8,5 +8,4 @@ import java.util.List;
 @Data
 public class OrderItemDto {
     private Long id;
-
 }

@@ -5,7 +5,6 @@ import lombok.Data;
 @Data
 public class DeliveryDto {
 
-    private String email;
     private Long orderId;
 
 }

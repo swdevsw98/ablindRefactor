@@ -2,6 +2,7 @@ package com.example.demo.entity.shop;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -13,6 +14,7 @@ import java.util.List;
 @Data
 @Table(name = "item")
 @Entity
+@ToString(exclude = {"options", "images"})
 public class Item {
 
     @Id

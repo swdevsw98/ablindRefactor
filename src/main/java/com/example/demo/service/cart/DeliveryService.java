@@ -23,15 +23,14 @@ public class DeliveryService {
 
     //관리자가 배송하기 전
     public void startDelivery(DeliveryDto deliveryDto){
-        Member member = memberRepository.findByEmail(deliveryDto.getEmail())
-                .orElseThrow(() -> new IllegalStateException("없는 고객"));
         Order order = orderRepository.findById(deliveryDto.getOrderId())
                 .orElseThrow(() -> new IllegalStateException("없는 주문"));
 
         Delivery delivery = new Delivery();
-        delivery.setAddress(member.getAddress());
+        delivery.setAddress(order.getRecipientAddress());
         delivery.setDeliveryStatus(DeliveryStatus.READY);
 
+        order.setOrderStatus("배송 준비 중");
         order.setDelivery(delivery);
 
         orderRepository.save(order);

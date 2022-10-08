@@ -7,6 +7,7 @@ import com.example.demo.dto.artist.ArtWorkDto;
 import com.example.demo.dto.artist.ArtistDetailDto;
 import com.example.demo.dto.artist.ArtistInfoDto;
 import com.example.demo.dto.artist.FollowDto;
+import com.example.demo.dto.cart.DeliveryDto;
 import com.example.demo.dto.order.OrderDetailDto;
 import com.example.demo.dto.order.OrderFilterDto;
 import com.example.demo.dto.shop.ItemDto;
@@ -18,7 +19,9 @@ import com.example.demo.service.admin.AdminArtistFollowService;
 import com.example.demo.service.admin.AdminArtistService;
 import com.example.demo.service.admin.AdminService;
 import com.example.demo.service.admin.AdminShopService;
+import com.example.demo.service.cart.DeliveryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,6 +40,13 @@ public class AdminController {
     private final AdminShopService adminShopService;
     private final AdminArtistService adminArtistService;
     private final AdminArtistFollowService adminArtistFollowService;
+    private final DeliveryService deliveryService;
+
+    @PostMapping("delivery/pay")
+    public ResponseEntity payDelivery(@RequestBody DeliveryDto deliveryDto){
+        deliveryService.startDelivery(deliveryDto);
+        return new ResponseEntity("배달시작~", HttpStatus.OK);
+    }
 
     @PostMapping("/add/mainbanner")
     public ResponseEntity addMainBanner(@RequestPart(value="file", required = false)MultipartFile multipartFile,
@@ -106,6 +116,12 @@ public class AdminController {
             orderFilterDto.setOrderStatus(orderStatus);
 
         return adminShopService.listOrder(getEmail(request), orderFilterDto);
+    }
+
+    @PostMapping("/list/order/update")
+    public ResponseEntity updateOrder(ServletRequest request,
+                                      @RequestBody OrderDetailDto orderDetailDto){
+        return adminShopService.updateOrderStatus(getEmail(request), orderDetailDto);
     }
 
     @PostMapping("/artist/add")

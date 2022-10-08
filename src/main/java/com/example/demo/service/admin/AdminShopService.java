@@ -85,8 +85,18 @@ public class AdminShopService {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(()->new IllegalStateException("그런 유저 없음"));
         isAdmin(member.getRole());
+        Item item = itemRepository.findById(id)
+                        .orElseThrow(() -> new IllegalStateException("그런 아이템 없음"));
 
-        itemRepository.deleteById(id);
+        for(ItemOption itemOption : item.getOptions()){
+            itemOptionRepository.deleteById(itemOption.getId());
+        }
+        for(ItemImages itemImage : item.getImages()) {
+            itemImagesRepository.deleteById(itemImage.getId());
+        }
+        itemRepository.delete(item);
+
+
         return new ResponseEntity("삭제 완료", HttpStatus.OK);
     }
 
@@ -104,6 +114,7 @@ public class AdminShopService {
 
         for(ItemQnaBoard itemQnaBoard : itemQnaBoards) {
             ItemQnaDto itemQnaDto = ItemQnaDto.builder()
+                    .itemId(itemQnaBoard.getItemQnaId().getId())
                     .qnaBoardId(itemQnaBoard.getId())
                     .title(itemQnaBoard.getTitle())
                     .content(itemQnaBoard.getContent())
@@ -160,6 +171,7 @@ public class AdminShopService {
 
         for(Order order : orders){
             OrderDetailDto orderDetailDto = OrderDetailDto.builder()
+                    .orderStatus(order.getOrderStatus())
                     .price(order.getPrice())
                     .createdAt(order.getCreatedAt())
                     .id(order.getId())
@@ -178,25 +190,18 @@ public class AdminShopService {
                 orderDetailDto.getOrderItems().add(itemDto);
             }
 
-            if(order.getDelivery() == null) {
-                orderDetailDto.setOrderStatus("주문완료");
-            } else if (order.getDelivery().getDeliveryStatus() == DeliveryStatus.READY){
-                orderDetailDto.setOrderStatus("배송 준비 중");
-            } else if(order.getDelivery().getDeliveryStatus() == DeliveryStatus.GO) {
-                orderDetailDto.setOrderStatus("배송 중");
-            } else if (order.getDelivery().getDeliveryStatus() == DeliveryStatus.CANCEL) {
-                orderDetailDto.setOrderStatus("배송 취소");
-
-            }
-            System.out.println(orderDetailDto.getOrdererName());
-            System.out.println(orderFilterDto.getOrderer());
+            //필터링 없음
             if(orderFilterDto.getOrderer() == null && orderFilterDto.getOrderStatus() == null) {
                 orderDetailDtos.add(orderDetailDto);
-            } else if(orderFilterDto.getOrderer() != null && orderFilterDto.getOrderStatus() == null) {
+            }
+            //orderer 필터
+            else if(orderFilterDto.getOrderer() != null && orderFilterDto.getOrderStatus() == null) {
                 if(orderDetailDto.getOrdererName().equals(orderFilterDto.getOrderer())){
                     orderDetailDtos.add(orderDetailDto);
                 }
-            } else if(orderFilterDto.getOrderer() == null && orderFilterDto.getOrderStatus() != null) {
+            }
+            //orderStatus 필터
+            else if(orderFilterDto.getOrderer() == null && orderFilterDto.getOrderStatus() != null) {
                 if(orderDetailDto.getOrderStatus().equals(orderFilterDto.getOrderStatus())){
                     orderDetailDtos.add(orderDetailDto);
                 }
@@ -206,6 +211,35 @@ public class AdminShopService {
         return orderDetailDtos;
     }
 
+    /**
+     * 주문상태 변경
+     */
+    public ResponseEntity updateOrderStatus(String email, OrderDetailDto orderDetailDto) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(()->new IllegalStateException("그런 유저 없음"));
+        isAdmin(member.getRole());
+
+        Order order = orderRepository.findById(orderDetailDto.getId())
+                .orElseThrow(() -> new IllegalStateException("그런 주문 없음"));
+
+        if(orderDetailDto.getOrderStatus().equals("주문완료")){
+            order.setOrderStatus("주문완료");
+            order.setDelivery(null);
+        } else if(orderDetailDto.getOrderStatus().equals("배송 준비 중") && order.getDelivery() != null){
+            order.setOrderStatus("배송 준비 중");
+            order.getDelivery().setDeliveryStatus(DeliveryStatus.READY);
+        } else if(orderDetailDto.getOrderStatus().equals("배송 중") && order.getDelivery() != null){
+            order.setOrderStatus("배송 중");
+            order.getDelivery().setDeliveryStatus(DeliveryStatus.GO);
+        } else if(orderDetailDto.getOrderStatus().equals("배송 취소") && order.getDelivery() != null){
+            order.setOrderStatus("배송 취소");
+            order.getDelivery().setDeliveryStatus(DeliveryStatus.CANCEL);
+        } else {
+            return new ResponseEntity("배송 상태를 확인해주세요.", HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity("업데이트 성공", HttpStatus.OK);
+    }
 
     private void isAdmin(String role) {
         if(role != "ADMIN") {

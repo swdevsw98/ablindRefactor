@@ -12,6 +12,7 @@ import com.example.demo.dto.order.OrderFilterDto;
 import com.example.demo.dto.shop.ItemDto;
 import com.example.demo.dto.shop.ItemQnaAnswerDto;
 import com.example.demo.dto.shop.ItemQnaDto;
+import com.example.demo.dto.shop.ShopBannerDto;
 import com.example.demo.entity.MainBanner;
 import com.example.demo.service.admin.AdminArtistFollowService;
 import com.example.demo.service.admin.AdminArtistService;
@@ -48,6 +49,19 @@ public class AdminController {
     public ResponseEntity deleteMainBanner(@RequestBody MainBannerDto mainBannerDto,
                                            ServletRequest request){
         return adminService.deleteMainBanner(getEmail(request),mainBannerDto.getId());
+    }
+
+    @PostMapping("/add/shopbanner")
+    public ResponseEntity addShopBanner(@RequestPart(value="file", required = false)MultipartFile multipartFile,
+                                        @RequestPart(value = "ShopBannerDto") ShopBannerDto shopBannerDto,
+                                        ServletRequest request) throws IOException {
+        return adminService.addShopBanner(getEmail(request), multipartFile, shopBannerDto);
+    }
+
+    @DeleteMapping("/delete/shopbanner")
+    public ResponseEntity deleteShopBanner(@RequestBody ShopBannerDto shopBannerDto,
+                                           ServletRequest request){
+        return adminService.deleteShopBanner(getEmail(request),shopBannerDto.getId());
     }
 
     @PostMapping("/add/item")

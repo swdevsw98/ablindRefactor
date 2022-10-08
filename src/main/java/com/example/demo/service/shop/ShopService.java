@@ -28,6 +28,7 @@ public class ShopService {
                     .itemId(item.getId())
                     .name(item.getName())
                     .price(item.getPrice())
+                    .category(item.getCategory())
                     .build();
 
             itemDtoList.add(itemDto);

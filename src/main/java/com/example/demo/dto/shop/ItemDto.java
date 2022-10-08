@@ -30,7 +30,7 @@ public class ItemDto {
 
     @Builder
     public ItemDto(Long itemId, String name, Long price, String author, List<ItemImages> images,
-                   String detailImg, List<ItemOption> options){
+                   String detailImg, List<ItemOption> options, String category){
         this.itemId = itemId;
         this.name = name;
         this.price = price;
@@ -38,5 +38,6 @@ public class ItemDto {
         this.images = images;
         this.detailImg = detailImg;
         this.options = options;
+        this.category = category;
     }
 }

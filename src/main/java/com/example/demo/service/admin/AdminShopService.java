@@ -234,7 +234,11 @@ public class AdminShopService {
         } else if(orderDetailDto.getOrderStatus().equals("배송 취소") && order.getDelivery() != null){
             order.setOrderStatus("배송 취소");
             order.getDelivery().setDeliveryStatus(DeliveryStatus.CANCEL);
-        } else {
+        } else if(orderDetailDto.getOrderStatus().equals("배송완료") && order.getDelivery() != null){
+            order.setOrderStatus("배송완료");
+            order.getDelivery().setDeliveryStatus(DeliveryStatus.END);
+        }
+        else {
             return new ResponseEntity("배송 상태를 확인해주세요.", HttpStatus.BAD_REQUEST);
         }
 

@@ -5,6 +5,7 @@ import com.example.demo.dto.MemberFormDto;
 import com.example.demo.dto.artist.ArtistDetailDto;
 import com.example.demo.dto.order.MypageOrderItemDto;
 import com.example.demo.dto.order.OrderDetailDto;
+import com.example.demo.dto.order.OrderItemDto;
 import com.example.demo.dto.order.OrderListDto;
 import com.example.demo.entity.Member;
 import com.example.demo.entity.artist.Follow;
@@ -135,7 +136,9 @@ public class MypageService {
                 .build();
 
         for(OrderItem orderItem : order.getOrderItems()) {
-            orderDetailDto.getOrderItems().add(orderItem);
+            OrderItemDto itemDto = new OrderItemDto();
+            itemDto.setOrderItem(orderItem);
+            orderDetailDto.getOrderItems().add(itemDto);
         }
 
         return orderDetailDto;

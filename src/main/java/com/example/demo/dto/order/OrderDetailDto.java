@@ -28,7 +28,7 @@ public class OrderDetailDto {
     private String recipientAddress;
 
     //주문상품
-    private List<OrderItem> orderItems = new ArrayList<>();
+    private List<OrderItemDto> orderItems = new ArrayList<>();
 
     @Builder
     public OrderDetailDto (String orderStatus, Long price, String createdAt,

@@ -26,7 +26,7 @@ public class CartService {
     private final CartItemRepository cartItemRepository;
     private final ItemRepository itemRepository;
 
-    public void addCart(String email,CartDto cartDto) {
+    public Long addCart(String email,CartDto cartDto) {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalStateException("없는 고객입니다."));
 
@@ -52,6 +52,8 @@ public class CartService {
         }
 
         cartItemRepository.save(cartItem);
+
+        return cartItem.getId();
     }
 
     public List<CartDto> getCartItemList(String email) {

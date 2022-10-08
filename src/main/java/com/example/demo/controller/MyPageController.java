@@ -55,12 +55,10 @@ public class MyPageController {
 
     //장바구니 담기
     @PostMapping("/cart/add")
-    public ResponseEntity addCart(ServletRequest request,
+    public Long addCart(ServletRequest request,
                                   @RequestBody CartDto cartDto){
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
-        cartService.addCart(jwtTokenProvider.getUserPk(token),cartDto);
-
-        return new ResponseEntity("장바구니에 추가 됐습니다~", HttpStatus.OK);
+        return cartService.addCart(jwtTokenProvider.getUserPk(token),cartDto);
     }
 
     //장바구니 수정

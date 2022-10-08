@@ -2,6 +2,7 @@ package com.example.demo.service.admin;
 
 import com.example.demo.dto.order.OrderDetailDto;
 import com.example.demo.dto.order.OrderFilterDto;
+import com.example.demo.dto.order.OrderItemDto;
 import com.example.demo.dto.shop.ItemDto;
 import com.example.demo.dto.shop.ItemQnaAnswerDto;
 import com.example.demo.dto.shop.ItemQnaDto;
@@ -172,7 +173,9 @@ public class AdminShopService {
                     .build();
 
             for(OrderItem orderItem : order.getOrderItems()){
-                orderDetailDto.getOrderItems().add(orderItem);
+                OrderItemDto itemDto = new OrderItemDto();
+                itemDto.setOrderItem(orderItem);
+                orderDetailDto.getOrderItems().add(itemDto);
             }
 
             if(order.getDelivery() == null) {

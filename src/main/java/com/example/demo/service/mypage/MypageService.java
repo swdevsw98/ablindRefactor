@@ -80,7 +80,9 @@ public class MypageService {
                     .price(artist.getPrice())
                     .build();
 
-            detailDtos.add(detailDto);
+            if(artist.isApprove() == true) {
+                detailDtos.add(detailDto);
+            }
         }
         return detailDtos;
     }

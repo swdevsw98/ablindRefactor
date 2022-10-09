@@ -64,6 +64,9 @@ public class AdminArtistService {
         s3Uploader.deleteFile(artist.getDeleteProfile());
         s3Uploader.deleteFile(artist.getDeleteBackGround());
         s3Uploader.deleteFile(artist.getDeleteDetail());
+        for(ArtWorks artWorks : artist.getWorks()){
+            artistWorkRepository.deleteById(artWorks.getId());
+        }
         artistRepository.deleteById(artistDetailDto.getArtistId());
 
         return new ResponseEntity("작가 삭제 성공", HttpStatus.OK);

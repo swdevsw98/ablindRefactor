@@ -68,6 +68,7 @@ public class AdminController {
         return adminService.addShopBanner(getEmail(request), multipartFile, shopBannerDto);
     }
 
+
     @DeleteMapping("/delete/shopbanner")
     public ResponseEntity deleteShopBanner(@RequestBody ShopBannerDto shopBannerDto,
                                            ServletRequest request){

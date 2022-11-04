@@ -82,6 +82,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
+        config.addAllowedOrigin("https://www.ablind.shop");
         config.addAllowedOrigin("https://www.ablind.shop:3000");
         config.addAllowedOrigin("http://localhost:3000");
         config.addAllowedMethod("*");

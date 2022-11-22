@@ -78,6 +78,8 @@ public class ItemQnaService {
                 .secretTNF(itemQnaDto.isSecretTNF())
                 .build();
 
+        itemQnaBoard.addItem(item);
+
         itemQnaRepository.save(itemQnaBoard);
     }
 

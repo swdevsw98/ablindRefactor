@@ -35,6 +35,7 @@ public class AdminShopService {
 
     private final ItemQnaRepository itemQnaRepository;
     private final OrderRepository orderRepository;
+    private final ItemReviewRepository itemReviewRepository;
 
     /**
      * 아이템 추가
@@ -87,6 +88,14 @@ public class AdminShopService {
         isAdmin(member.getRole());
         Item item = itemRepository.findById(id)
                         .orElseThrow(() -> new IllegalStateException("그런 아이템 없음"));
+
+        for(ItemReviewBoard itemReviewBoard : item.getItemReviewBoards()){
+            itemReviewRepository.deleteById(itemReviewBoard.getId());
+        }
+
+        for(ItemQnaBoard itemQnaBoard : item.getItemQnaBoards()) {
+            itemQnaRepository.deleteById(itemQnaBoard.getId());
+        }
 
         for(ItemOption itemOption : item.getOptions()){
             itemOptionRepository.deleteById(itemOption.getId());

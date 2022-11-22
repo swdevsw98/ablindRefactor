@@ -46,6 +46,10 @@ public class Item {
     @OneToMany(mappedBy = "itemReviewId")
     private List<ItemReviewBoard> itemReviewBoards = new ArrayList<>();
 
+    @OneToMany(mappedBy = "itemQnaId")
+    private List<ItemQnaBoard> itemQnaBoards = new ArrayList<>();
+
+
     public Item(String name, String author, Long price,
                 String category) {
         this.name = name;

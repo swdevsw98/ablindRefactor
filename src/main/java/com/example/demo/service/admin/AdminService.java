@@ -119,7 +119,9 @@ public class AdminService {
         //user
         Member user = memberRepository.findById(memberDataDto.getId())
                 .orElseThrow(() -> new IllegalStateException("유저 없음"));
-        s3Uploader.deleteFile(member.getDeleteImage());
+        if(user.getDeleteImage() != null)
+            s3Uploader.deleteFile(member.getDeleteImage());
+
         itemQnaRepository.deleteAllByMember(user);
         orderRepository.deleteAllByMemberId(user);
         itemReviewRepository.deleteAllByMember(user);

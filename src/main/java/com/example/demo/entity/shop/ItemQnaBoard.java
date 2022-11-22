@@ -33,6 +33,11 @@ public class ItemQnaBoard extends BaseEntity {
     @OneToOne
     private Member member;
 
+    public void addItem(Item item){
+        this.itemQnaId = item;
+        itemQnaId.getItemQnaBoards().add(this);
+    }
+
     @Builder
     public ItemQnaBoard(Item item, String title, String content,
                         Member member, boolean secretTNF){

@@ -65,8 +65,11 @@ public class MypageService {
     public List<ArtistDetailDto> getFollowArtist(String email) {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalStateException("그런 유저 없음"));
-        List<Follow> artists = member.getArtistFollow();
+        List<Follow> artists = artistFollowRepository.findByFollowUserId(member)
+                .orElseThrow(() -> new IllegalStateException("구독 없음"));
         List<ArtistDetailDto> detailDtos = new ArrayList<>();
+
+//        System.out.println(artists);
 
         for(Follow artist : artists){
             ArtistDetailDto detailDto = ArtistDetailDto.builder()

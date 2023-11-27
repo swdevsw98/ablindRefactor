@@ -2,7 +2,6 @@ package com.example.demo.service.admin;
 
 import com.example.demo.dto.artist.ArtWorkDto;
 import com.example.demo.dto.artist.ArtistDetailDto;
-import com.example.demo.dto.artist.ArtistInfoDto;
 import com.example.demo.entity.Member;
 import com.example.demo.entity.artist.ArtWorks;
 import com.example.demo.entity.artist.Artist;

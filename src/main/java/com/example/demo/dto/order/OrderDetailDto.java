@@ -1,6 +1,5 @@
 package com.example.demo.dto.order;
 
-import com.example.demo.entity.shop.OrderItem;
 import lombok.Builder;
 import lombok.Data;
 

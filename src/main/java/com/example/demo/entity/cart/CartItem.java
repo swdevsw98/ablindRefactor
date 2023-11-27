@@ -1,6 +1,5 @@
 package com.example.demo.entity.cart;
 
-import com.example.demo.entity.shop.Item;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;

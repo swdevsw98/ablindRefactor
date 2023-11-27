@@ -1,7 +1,6 @@
 package com.example.demo.service.cart;
 
 import com.example.demo.dto.cart.DeliveryDto;
-import com.example.demo.entity.Member;
 import com.example.demo.entity.cart.Delivery;
 import com.example.demo.entity.cart.DeliveryStatus;
 import com.example.demo.entity.shop.Order;

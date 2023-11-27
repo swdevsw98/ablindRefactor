@@ -1,6 +1,5 @@
 package com.example.demo.entity.artist;
 
-import com.example.demo.entity.artist.Artist;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;

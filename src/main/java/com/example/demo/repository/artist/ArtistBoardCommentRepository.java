@@ -1,6 +1,5 @@
 package com.example.demo.repository.artist;
 
-import com.example.demo.dto.artist.CommentDto;
 import com.example.demo.entity.artist.ArtistBoard;
 import com.example.demo.entity.artist.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;

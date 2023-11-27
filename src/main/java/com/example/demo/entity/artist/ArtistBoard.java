@@ -2,7 +2,6 @@ package com.example.demo.entity.artist;
 
 import com.example.demo.dto.artist.ArtistBoardDto;
 import com.example.demo.entity.BaseEntity;
-import com.example.demo.entity.artist.Artist;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;

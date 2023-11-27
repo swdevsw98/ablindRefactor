@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import com.example.demo.config.JwtTokenProvider;
 import com.example.demo.entity.Member;
 import com.example.demo.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;

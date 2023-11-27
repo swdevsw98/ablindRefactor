@@ -1,6 +1,5 @@
 package com.example.demo.entity;
 
-import com.example.demo.config.SecurityConfig;
 import com.example.demo.dto.MemberFormDto;
 import com.example.demo.entity.artist.Follow;
 import com.example.demo.entity.cart.Cart;
@@ -9,7 +8,6 @@ import com.example.demo.entity.shop.ItemReviewBoard;
 import com.example.demo.entity.shop.Order;
 import lombok.Data;
 
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.security.crypto.password.PasswordEncoder;
 

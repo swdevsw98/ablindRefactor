@@ -1,11 +1,9 @@
 package com.example.demo.service.shop;
 
 import com.example.demo.dto.shop.ItemQnaDto;
-import com.example.demo.dto.shop.ItemReviewDto;
 import com.example.demo.entity.Member;
 import com.example.demo.entity.shop.Item;
 import com.example.demo.entity.shop.ItemQnaBoard;
-import com.example.demo.entity.shop.ItemReviewBoard;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.shop.ItemQnaRepository;
 import lombok.RequiredArgsConstructor;

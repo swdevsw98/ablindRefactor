@@ -7,11 +7,9 @@ import com.example.demo.dto.artist.ArtistDetailDto;
 import com.example.demo.dto.cart.CartDto;
 import com.example.demo.dto.order.OrderDetailDto;
 import com.example.demo.dto.order.OrderListDto;
-import com.example.demo.entity.cart.CartItem;
 import com.example.demo.service.cart.CartService;
 import com.example.demo.service.mypage.MypageService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +19,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @RequestMapping("/mypage")
 @RestController

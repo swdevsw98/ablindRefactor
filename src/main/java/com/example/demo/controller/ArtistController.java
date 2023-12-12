@@ -5,6 +5,7 @@ import com.example.demo.dto.artist.ArtistBoardDto;
 import com.example.demo.dto.artist.ArtistDetailDto;
 import com.example.demo.dto.artist.ArtistInfoDto;
 import com.example.demo.dto.artist.CommentDto;
+import com.example.demo.dto.shop.ArtistProductRequest;
 import com.example.demo.entity.artist.ArtWorks;
 import com.example.demo.entity.artist.Artist;
 import com.example.demo.repository.artist.ArtistBoardRepository;
@@ -14,13 +15,16 @@ import com.example.demo.service.MemberService;
 import com.example.demo.service.artist.ArtistBoardCommentService;
 import com.example.demo.service.artist.ArtistBoardService;
 import com.example.demo.service.artist.FollowService;
+import com.example.demo.service.shop.ShopService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +43,7 @@ public class ArtistController {
     private final ArtistWorkRepository artistWorkRepository;
     private final ArtistBoardCommentService artistBoardCommentService;
     private final MemberService memberService;
+    private final ShopService shopService;
 
     //artist 작가 리스트 출력
     @GetMapping("")
@@ -170,5 +175,16 @@ public class ArtistController {
     @DeleteMapping("/{artistId}/board/{boardId}/delete")
     public ResponseEntity deleteBoardComment(@RequestBody CommentDto commentDto) {
         return artistBoardCommentService.deleteComment(commentDto.getCommentId());
+    }
+
+    //상품 등록
+    @PostMapping("add/product")
+    public ResponseEntity addProduct(
+            @RequestPart(name = "artistProductRequest") ArtistProductRequest artistProductRequest,
+            @RequestPart(name = "capturedImage") MultipartFile image,
+            ServletRequest request) throws IOException {
+        String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
+        String email = jwtTokenProvider.getUserPk(token);
+        return shopService.addArtistProduct(artistProductRequest, email, image);
     }
 }

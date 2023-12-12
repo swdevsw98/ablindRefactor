@@ -3,6 +3,7 @@ package com.example.demo.entity;
 import com.example.demo.dto.MemberFormDto;
 import com.example.demo.entity.artist.Follow;
 import com.example.demo.entity.cart.Cart;
+import com.example.demo.entity.shop.ArtistProduct;
 import com.example.demo.entity.shop.ItemQnaBoard;
 import com.example.demo.entity.shop.ItemReviewBoard;
 import com.example.demo.entity.shop.Order;
@@ -64,6 +65,9 @@ public class Member {
 
     @OneToMany(mappedBy = "followUserId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Follow> artistFollow = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<ArtistProduct> artistProducts = new ArrayList<>();
 
     public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder){
         Member member = new Member();

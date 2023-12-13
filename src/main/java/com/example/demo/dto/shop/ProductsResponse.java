@@ -9,13 +9,15 @@ public class ProductsResponse {
     private String description;
     private Integer price;
     private String image;
+    private String artist;
 
     public ProductsResponse(String image, String title, String description, Integer price,
-                             Long productId){
+                             Long productId, String artist){
         this.image = image;
         this.title = title;
         this.description = description;
         this.price = price;
         this.productId = productId;
+        this.artist = artist;
     }
 }

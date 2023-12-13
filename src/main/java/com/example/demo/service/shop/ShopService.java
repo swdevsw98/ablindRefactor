@@ -135,7 +135,8 @@ public class ShopService {
                                 product.getTitle(),
                                 product.getDescription(),
                                 product.getPrice(),
-                                product.getId()
+                                product.getId(),
+                                product.getMember().getName()
                         )
                 )
                 .collect(Collectors.toList());

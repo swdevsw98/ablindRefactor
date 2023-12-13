@@ -3,6 +3,7 @@ package com.example.demo.service.shop;
 import com.amazonaws.Response;
 import com.example.demo.dto.shop.ArtistProductRequest;
 import com.example.demo.dto.shop.ItemDto;
+import com.example.demo.dto.shop.ProductsResponse;
 import com.example.demo.entity.Member;
 import com.example.demo.entity.shop.ArtistProduct;
 import com.example.demo.entity.shop.Item;
@@ -20,6 +21,7 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -120,5 +122,22 @@ public class ShopService {
         artistProductRepository.save(artistProduct);
 
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+
+    //작가 상품 출력
+    public List<ProductsResponse> getProducts() {
+        return artistProductRepository.findAll()
+                .stream()
+                .map(
+                        product -> new ProductsResponse(
+                                product.getImage(),
+                                product.getTitle(),
+                                product.getDescription(),
+                                product.getPrice(),
+                                product.getId()
+                        )
+                )
+                .collect(Collectors.toList());
     }
 }

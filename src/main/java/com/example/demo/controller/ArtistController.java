@@ -6,6 +6,7 @@ import com.example.demo.dto.artist.ArtistDetailDto;
 import com.example.demo.dto.artist.ArtistInfoDto;
 import com.example.demo.dto.artist.CommentDto;
 import com.example.demo.dto.shop.ArtistProductRequest;
+import com.example.demo.dto.shop.ProductsResponse;
 import com.example.demo.entity.artist.ArtWorks;
 import com.example.demo.entity.artist.Artist;
 import com.example.demo.repository.artist.ArtistBoardRepository;
@@ -186,5 +187,11 @@ public class ArtistController {
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
         String email = jwtTokenProvider.getUserPk(token);
         return shopService.addArtistProduct(artistProductRequest, email, image);
+    }
+
+    //상품 조회
+    @GetMapping("products")
+    public List<ProductsResponse> getProducts() {
+        return shopService.getProducts();
     }
 }

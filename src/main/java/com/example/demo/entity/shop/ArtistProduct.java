@@ -4,10 +4,12 @@ package com.example.demo.entity.shop;
 import com.example.demo.dto.shop.ArtistProductRequest;
 import com.example.demo.entity.Member;
 import lombok.Data;
-import org.h2.engine.User;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
+@NoArgsConstructor
 @Data
 @Entity
 public class ArtistProduct {
@@ -20,9 +22,11 @@ public class ArtistProduct {
     private String title;
     private String description;
     private Integer price;
+    private Integer salesNum;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
+
 
     public ArtistProduct(Member member, ArtistProductRequest artistProductRequest,
                          String image){
@@ -31,5 +35,6 @@ public class ArtistProduct {
         this.description = artistProductRequest.getDescription();
         this.price = artistProductRequest.getPrice();
         this.image = image;
+        this.salesNum = 0;
     }
 }

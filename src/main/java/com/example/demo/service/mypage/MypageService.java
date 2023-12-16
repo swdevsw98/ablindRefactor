@@ -7,12 +7,14 @@ import com.example.demo.dto.order.MypageOrderItemDto;
 import com.example.demo.dto.order.OrderDetailDto;
 import com.example.demo.dto.order.OrderItemDto;
 import com.example.demo.dto.order.OrderListDto;
+import com.example.demo.dto.shop.MyProductResponse;
 import com.example.demo.entity.Member;
 import com.example.demo.entity.artist.Follow;
 import com.example.demo.entity.shop.Order;
 import com.example.demo.entity.shop.OrderItem;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.artist.ArtistFollowRepository;
+import com.example.demo.repository.shop.ArtistProductRepository;
 import com.example.demo.repository.shop.OrderRepository;
 import com.example.demo.service.S3Uploader;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -38,6 +41,7 @@ public class MypageService {
     private final ArtistFollowRepository artistFollowRepository;
     private final S3Uploader s3Uploader;
     private final PasswordEncoder passwordEncoder;
+    private final ArtistProductRepository artistProductRepository;
 
     /**
      * 유저 정보 가져오기
@@ -180,5 +184,22 @@ public class MypageService {
         memberRepository.save(member);
 
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    //내가 등록한 작품 보기
+    public List<MyProductResponse> getMyProducts(String email) {
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalStateException("User Not Found"));
+
+        return artistProductRepository.findByMember(member)
+                .stream()
+                .map(artistProduct -> new MyProductResponse(
+                        artistProduct.getImage(),
+                        artistProduct.getTitle(),
+                        artistProduct.getDescription(),
+                        artistProduct.getPrice(),
+                        artistProduct.getSalesNum()
+                ))
+                .collect(Collectors.toList());
     }
 }

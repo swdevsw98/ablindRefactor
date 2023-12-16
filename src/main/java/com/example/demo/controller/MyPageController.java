@@ -7,6 +7,7 @@ import com.example.demo.dto.artist.ArtistDetailDto;
 import com.example.demo.dto.cart.CartDto;
 import com.example.demo.dto.order.OrderDetailDto;
 import com.example.demo.dto.order.OrderListDto;
+import com.example.demo.dto.shop.MyProductResponse;
 import com.example.demo.service.cart.CartService;
 import com.example.demo.service.mypage.MypageService;
 import lombok.RequiredArgsConstructor;
@@ -103,5 +104,11 @@ public class MyPageController {
     private String getEmail(ServletRequest request){
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
         return jwtTokenProvider.getUserPk(token);
+    }
+
+    //판매 아이템 조회
+    @GetMapping("manage-product")
+    public List<MyProductResponse> getMyProducts(ServletRequest request) {
+        return mypageService.getMyProducts(getEmail(request));
     }
 }

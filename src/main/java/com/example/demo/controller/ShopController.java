@@ -3,10 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.config.JwtTokenProvider;
 import com.example.demo.dto.MemberDataDto;
 import com.example.demo.dto.order.OrderFinalDto;
-import com.example.demo.dto.shop.ItemDto;
-import com.example.demo.dto.shop.ItemQnaDto;
-import com.example.demo.dto.shop.ItemReviewDto;
-import com.example.demo.dto.shop.OrderDto;
+import com.example.demo.dto.shop.*;
 import com.example.demo.entity.shop.*;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.shop.ItemRepository;
@@ -175,6 +172,14 @@ public class ShopController {
         itemQnaService.deleteQna(itemQnaDto);
         return new ResponseEntity("게시글 삭제 완료", HttpStatus.OK);
     }
+
+    @GetMapping("/products")
+    public ProductsResponse getProduct(@RequestParam(value = "productId") Long productId) {
+        return shopService.getProduct(productId);
+    }
+
+
+
     private String getEmail(ServletRequest request){
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
         return jwtTokenProvider.getUserPk(token);

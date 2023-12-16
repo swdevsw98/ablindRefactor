@@ -141,4 +141,20 @@ public class ShopService {
                 )
                 .collect(Collectors.toList());
     }
+
+    //상품 상세 조회
+    public ProductsResponse getProduct(Long productId) {
+        return artistProductRepository.findById(productId)
+                .map(
+                        product -> new ProductsResponse(
+                                product.getImage(),
+                                product.getTitle(),
+                                product.getDescription(),
+                                product.getPrice(),
+                                product.getId(),
+                                product.getMember().getName()
+                        )
+                )
+                .orElseThrow(() -> new IllegalStateException("상품 없음"));
+    }
 }

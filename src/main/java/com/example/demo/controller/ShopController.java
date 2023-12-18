@@ -178,7 +178,10 @@ public class ShopController {
         return shopService.getProduct(productId);
     }
 
-
+    @PostMapping("/purchase")
+    public ResponseEntity purchaseProduct(@RequestBody ProductRequest productRequest){
+        return shopService.purchaseProduct(productRequest.getProductId());
+    }
 
     private String getEmail(ServletRequest request){
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);

@@ -157,4 +157,14 @@ public class ShopService {
                 )
                 .orElseThrow(() -> new IllegalStateException("상품 없음"));
     }
+
+    //상품 구매
+    public ResponseEntity purchaseProduct(Long productId) {
+        ArtistProduct artistProduct = artistProductRepository.findById(productId)
+                .orElseThrow(()-> new IllegalStateException("없는 작품"));
+
+        artistProduct.addSalesNum();
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }

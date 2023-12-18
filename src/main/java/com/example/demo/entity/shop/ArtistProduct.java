@@ -37,4 +37,8 @@ public class ArtistProduct {
         this.image = image;
         this.salesNum = 0;
     }
+
+    public void addSalesNum(){
+        this.salesNum++;
+    }
 }
